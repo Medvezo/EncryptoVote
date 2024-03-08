@@ -1,8 +1,20 @@
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
-import { headerWords } from "@/lib/const";
 
 export default function Home() {
+	const headerWords = [
+		{
+			text: "Trust",
+		},
+		{
+			text: "your",
+		},
+		{
+			text: "Vote.",
+			className: "text-blue-500 dark:text-blue-500",
+		},
+	];
+	
 	return (
 		<main className="flex flex-col justify-center items-center min-h-screen">
 
