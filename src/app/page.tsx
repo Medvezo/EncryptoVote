@@ -1,3 +1,4 @@
+import BentoGridSection from "@/components/container/BentoGridSection";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 
@@ -29,6 +30,7 @@ export default function Home() {
 				src={`/linear.webp`}
 				showGradient={false}
 			/>
+			<BentoGridSection />
 		</main>
 	);
 }
