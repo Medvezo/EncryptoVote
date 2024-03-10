@@ -27,7 +27,7 @@ export default function Home() {
 			</div>
 			<MacbookScroll
 				title={<span className="text-white">Vote from your Home!</span>}
-				src={`/linear.webp`}
+				src={`/OnlineVoteLaptop.jpg`}
 				showGradient={false}
 			/>
 			<BentoGridSection />
