@@ -8,6 +8,7 @@ import {
 	IconSignature,
 	IconTableColumn,
 } from "@tabler/icons-react";
+import { EvervaultCard } from "@/components/ui/encrypted-card";
 
 const Skeleton = () => (
 	<div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
@@ -54,8 +55,7 @@ const items = [
 	{
 		title: "The Spirit of Adventure",
 		description: "Embark on exciting journeys and thrilling discoveries.",
-		header: <Skeleton />,
-		icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
+		header: <EvervaultCard text={'Encrypted'}/>,
 	},
 ];
 

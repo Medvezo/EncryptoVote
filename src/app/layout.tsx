@@ -5,18 +5,19 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Encrypto Vote",
-  description: "Decentralized Voting system in Web 3.0 for companies and goverments",
+	title: "Encrypto Vote",
+	description:
+		"Decentralized Voting system in Web 3.0 for companies and goverments",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+	return (
+		<html lang="en" className="dark">
+			<body className={inter.className}>{children}</body>
+		</html>
+	);
 }
