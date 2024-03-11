@@ -8,7 +8,7 @@ export default function Home() {
 			<HeroSection />
 			<MacbookScroll
 				title={<span className="text-white">Vote from your Home!</span>}
-				src={`/OnlineVoteLaptop.jpg`}
+				src={`/OnlineVoteLaptop.webp`}
 				showGradient={false}
 			/>
 			<BentoGridSection />

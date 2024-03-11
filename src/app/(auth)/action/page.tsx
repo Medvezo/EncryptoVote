@@ -9,11 +9,11 @@ export default function page() {
 					Sign in for
 				</h2>
 			</header>
-			<section className="flex gap-5 px-5 ">
+			<section className="flex flex-col sm:flex-row gap-5 px-5 ">
 				<Link href="/signup">
 					<DirectionAwareHover
 						childrenClassName="flex justify-center items-end h-full w-full"
-						imageUrl="/CompanyVotingHands.jpg">
+						imageUrl="/CompanyVotingHands.webp">
 						<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
 							Company
 						</p>
@@ -22,7 +22,7 @@ export default function page() {
 				<Link href="/signup">
 					<DirectionAwareHover
 						childrenClassName="flex justify-center items-end h-full w-full"
-						imageUrl="/SingleVoterHand.png">
+						imageUrl="/SingleVoterHand.webp">
 						<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
 							Voter
 						</p>
