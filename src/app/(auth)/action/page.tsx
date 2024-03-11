@@ -1,4 +1,5 @@
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
+import Link from "next/link";
 
 export default function page() {
 	return (
@@ -9,20 +10,24 @@ export default function page() {
 				</h2>
 			</header>
 			<section className="flex gap-5 px-5 ">
-				<DirectionAwareHover
-					childrenClassName="flex justify-center items-end h-full w-full"
-					imageUrl="/CompanyVotingHands.jpg">
-					<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
-						Company
-					</p>
-				</DirectionAwareHover>
-				<DirectionAwareHover
-					childrenClassName="flex justify-center items-end h-full w-full"
-					imageUrl="/SingleVoterHand.png">
-					<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
-						Voter
-					</p>
-				</DirectionAwareHover>
+				<Link href="/signup">
+					<DirectionAwareHover
+						childrenClassName="flex justify-center items-end h-full w-full"
+						imageUrl="/CompanyVotingHands.jpg">
+						<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
+							Company
+						</p>
+					</DirectionAwareHover>
+				</Link>
+				<Link href="/signup">
+					<DirectionAwareHover
+						childrenClassName="flex justify-center items-end h-full w-full"
+						imageUrl="/SingleVoterHand.png">
+						<p className="text-3xl font-bold bg-black/50 rounded-2xl p-1 text-amber-500">
+							Voter
+						</p>
+					</DirectionAwareHover>
+				</Link>
 			</section>
 		</main>
 	);
