@@ -12,6 +12,7 @@ import {
 	Settings,
 	ShoppingCart,
 	Users2,
+	PlusCircle,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -60,9 +61,18 @@ import {
 
 // import AddVoteModal from "@/components/container/AddVoteModal";
 import dynamic from "next/dynamic";
-const AddVoteModal = dynamic(() => import("@/components/container/AddVoteModal"), {
-	ssr: false,
-})
+const AddVoteModal = dynamic(
+	() => import("@/components/container/AddVoteModal"),
+	{
+		ssr: false,
+		loading: () => (
+			<Button size="sm" className="h-8 gap-1">
+				<PlusCircle className="h-3.5 w-3.5" />
+				Add Vote
+			</Button>
+		),
+	}
+);
 
 export default function Dashboard() {
 	return (
