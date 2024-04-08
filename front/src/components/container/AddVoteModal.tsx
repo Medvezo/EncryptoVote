@@ -1,3 +1,4 @@
+"use client";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,22 +12,36 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function AddVoteModal() {
+	const [isMounted, setIsMounted] = useState(false);
 
-    
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	if (!isMounted) {
+		<Button size="sm" className="h-8 gap-1">
+			<PlusCircle className="h-3.5 w-3.5" />
+			<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+				Add Vote
+			</span>
+		</Button>;
+	}
+
 	return (
 		<>
 			{/* Add Vote Button */}
 			<AlertDialog>
-				<Button size="sm" className="h-8 gap-1">
-					<AlertDialogTrigger >
+				<AlertDialogTrigger>
+					<Button size="sm" className="h-8 gap-1">
 						<PlusCircle className="h-3.5 w-3.5" />
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
 							Add Vote
 						</span>
-					</AlertDialogTrigger>
-				</Button>
+					</Button>
+				</AlertDialogTrigger>
 
 				<AlertDialogContent>
 					<AlertDialogHeader>
