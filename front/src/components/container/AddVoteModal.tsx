@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function AddVoteModal() {
 	const [isMounted, setIsMounted] = useState(false);
@@ -45,11 +47,19 @@ export default function AddVoteModal() {
 
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete your
-							account and remove your data from our servers.
-						</AlertDialogDescription>
+                        <AlertDialogTitle className="text-center text-2xl">Create new Vote</AlertDialogTitle>
+						<form>
+							<div className="grid w-full items-center gap-4">
+								<div className="flex flex-col space-y-2">
+									<Label htmlFor="name">Name</Label>
+									<Input id="name" placeholder="Name of Vote" />
+								</div>
+								<div className="flex flex-col space-y-2">
+									<Label htmlFor="voteID">VoteID</Label>
+									<Input id="voteID" placeholder="**** **** ****" />
+								</div>
+							</div>
+						</form>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
