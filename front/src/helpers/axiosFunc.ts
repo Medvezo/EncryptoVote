@@ -1,32 +1,27 @@
-import axios from "axios";
 import axiosBase from "./axiosBase";
 
 type UserData = {
-  email: string;
-  password: string;
-}
-
-// Example of login request
-export const login = async (userData: UserData) => {
-  userData = {
-    email: "admin@mail.ru",
-    password: "admin123@",
-  }
-    try {
-    const response = await axios.post("/api/login", userData);
-    return response.data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
-
+	email: string;
+	password: string;
 };
 
-// Example of register request
+// Function to handle login requests
+export const login = async (userData: UserData) => {
+    try {
+        console.log("first data sent by front");
+        const response = await axiosBase.post("/api/login", userData);
+		return response.data;
+	} catch (error: any) {
+		throw error.response.data;
+	}
+};
+
+// Function to handle registration requests
 export const register = async (userData: UserData) => {
-  try {
-    const response = await axios.post("/api/signup", userData);
-    return response.data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
+	try {
+		const response = await axiosBase.post("/api/signup", userData);
+		return response.data;
+	} catch (error: any) {
+		throw error.response.data;
+	}
 };
