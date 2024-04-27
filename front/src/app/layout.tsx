@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Oxanium } from "next/font/google";
 import "./globals.css";
+// React Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const oxanium = Oxanium({ subsets: ["latin"] });
 
@@ -17,7 +20,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className="dark">
-			<body className={oxanium.className}>{children}</body>
+			<body className={oxanium.className}>
+				{children}
+				<ToastContainer theme="colored" />
+			</body>
 		</html>
 	);
 }
