@@ -55,7 +55,6 @@ import {
 
 // import AddVoteModal from "@/components/container/AddVoteModal";
 import dynamic from "next/dynamic";
-import SideBar from "@/components/layout/SideBar";
 const AddVoteModal = dynamic(
 	() => import("@/components/container/AddVoteModal"),
 	{
@@ -72,7 +71,6 @@ const AddVoteModal = dynamic(
 export default function Dashboard() {
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<SideBar />
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
 				<header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
 					<Sheet>
