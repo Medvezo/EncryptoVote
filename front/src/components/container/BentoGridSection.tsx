@@ -28,18 +28,26 @@ const items = [
 		header: <Skeleton />,
 		icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
 	},
+
+	{
+		title: "Other Wallets support",
+		description:
+			"Support for other wallets will come soon...",
+		header: (
+			<Image
+				src={"/CryptoWallets.svg"}
+				alt="MetaMask Icon"
+				width={600}
+				height={50}
+				className="overflow-hidden m-auto w-fit hover:translate-y-2 rounded-xl hover:scale-95 transition-transform duration-300 ease-out"
+			/>
+		),
+	},
 	{
 		title: "The Art of Design",
 		description: "Discover the beauty of thoughtful and functional design.",
 		header: <Skeleton />,
 		icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-	},
-	{
-		title: "The Power of Communication",
-		description:
-			"Understand the impact of effective communication in our lives.",
-		header: <Skeleton />,
-		icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
 	},
 	{
 		title: "MetaMask Support",
