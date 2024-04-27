@@ -1,13 +1,5 @@
 import Link from "next/link";
-
-const navigation = {
-	main: [
-		{ name: "Home", href: "/" },
-		{ name: "About", href: "/" },
-		{ name: "Blog", href: "/" },
-		{ name: "Contact", href: "/" },
-	],
-};
+import { navigation } from "@/lib/const";
 
 export default function Footer() {
 	return (
