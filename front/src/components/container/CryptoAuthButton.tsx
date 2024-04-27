@@ -3,15 +3,8 @@
 import { Button } from "../ui/button";
 import { ethers } from "ethers"; // Ensure ethers is properly imported
 import { useState } from "react";
+import { randomString } from "@/helpers/random";
 
-const randomString = function (length: number) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-};
 
 export default function CryptoAuthButton() {
     const [message, setMessage] = useState("");
