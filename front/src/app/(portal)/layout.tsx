@@ -1,3 +1,4 @@
+import MobileSideBar from "@/components/layout/MobileSideBar";
 import SideBar from "@/components/layout/SideBar";
 
 export default function RootLayout({
@@ -8,7 +9,7 @@ export default function RootLayout({
 	return (
 		<>
 			<SideBar />
-
+            <MobileSideBar />
 			{children}
 		</>
 	);
