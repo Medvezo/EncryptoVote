@@ -35,7 +35,7 @@ const items = [
 			"Support for other wallets will come soon...",
 		header: (
 			<Image
-				src={"/CryptoWallets.svg"}
+				src={"/home/CryptoWallets.svg"}
 				alt="MetaMask Icon"
 				width={600}
 				height={50}
@@ -54,7 +54,7 @@ const items = [
 		description: "Vote with wallet that supports 450,000+ coins",
 		header: (
 			<Image
-				src={"/MetaMaskIcon.svg"}
+				src={"/home/MetaMaskIcon.svg"}
 				alt="MetaMask Icon"
 				width={150}
 				height={50}
