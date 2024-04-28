@@ -1,5 +1,5 @@
+import AppHeader from "@/components/layout/AppHeader";
 import MobileSideBar from "@/components/layout/MobileSideBar";
-import SideBar from "@/components/layout/SideBar";
 
 export default function RootLayout({
 	children,
@@ -8,8 +8,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<>
-			<SideBar />
-            <MobileSideBar />
+			<AppHeader />
+			<MobileSideBar />
 			{children}
 		</>
 	);
