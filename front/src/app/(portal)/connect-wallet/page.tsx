@@ -17,7 +17,7 @@ export default function page() {
 	return (
 		<section className="flex justify-center items-center min-h-screen overflow-hidden">
 			<TwinkleSpikes />
-			<Card className="w-[350px]">
+			<Card className="w-[350px] lg:w-[500px]">
 				<CardHeader>
 					<CardTitle>Connect Your Wallet</CardTitle>
 				</CardHeader>

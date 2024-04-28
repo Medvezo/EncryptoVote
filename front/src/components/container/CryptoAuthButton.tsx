@@ -37,7 +37,7 @@ export default function CryptoAuthButton() {
 	};
 
 	return (
-		<div className="flex justify-center items-center my-3 mt-5">
+		<div className="flex flex-col justify-center items-center my-3 mt-10">
 			<Button onClick={handleCryptoButton} variant="default" className="font-bold text-lg">Connect Wallet</Button>
 			<p>{message}</p>
 			{message === "User Login" && <div>Account: {account}</div>}
