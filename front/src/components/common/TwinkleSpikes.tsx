@@ -1,10 +1,68 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 export default function TwinkleSpikes({ size }: { size?: string }) {
+	const svgRef = useRef(null);
+  const [lineStates, setLineStates] = useState([]);
+
+  useEffect(() => {
+    // Initialize line states with default values
+    const lines = svgRef.current.querySelectorAll("line");
+    const initialStates = Array.from(lines).map(line => {
+      const initialLength = Math.abs(line.x2.baseVal.value - line.x1.baseVal.value);
+      return {
+        line,
+        initialLength,
+        isChanging: false,
+        targetX1: line.x1.baseVal.value,
+        targetX2: line.x2.baseVal.value,
+      };
+    });
+    setLineStates(initialStates);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLineStates(currentStates =>
+        currentStates.map(state => {
+          if (!state.isChanging && Math.random() > 0.9) {
+            // Decide to change the line length with a random factor to make changes less uniform
+            const change = (Math.random() - 0.5) * state.initialLength * 0.1; // ±10% of the original length
+            const midpoint = (state.targetX2 + state.targetX1) / 2;
+            return {
+              ...state,
+              isChanging: true,
+              targetX1: midpoint - (state.initialLength / 2 + change),
+              targetX2: midpoint + (state.initialLength / 2 + change),
+            };
+          } else if (state.isChanging) {
+            // Apply a change gradually
+            const dx1 = (state.targetX1 - state.line.x1.baseVal.value) / 30;
+            const dx2 = (state.targetX2 - state.line.x2.baseVal.value) / 30;
+            state.line.x1.baseVal.value += dx1;
+            state.line.x2.baseVal.value += dx2;
+
+            // Check if the change is completed
+            if (Math.abs(state.line.x1.baseVal.value - state.targetX1) < 0.1 && Math.abs(state.line.x2.baseVal.value - state.targetX2) < 0.1) {
+              state.isChanging = false;
+            }
+          }
+          return state;
+        })
+      );
+    }, 25); // Faster interval for a smoother animation
+
+    return () => clearInterval(timer);
+  }, []);
+
 	return (
-		<div className={`w-full md:w-1/2 aspect-square -z-10`}  >
+		<div className={`w-full absolute 2xl:w-1/2 aspect-square -z-10`}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				version="1.1"
 				viewBox="0 0 800 800"
+				ref={svgRef}
 			>
 				<g
 					fill="none"
