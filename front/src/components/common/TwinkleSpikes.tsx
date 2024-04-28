@@ -66,9 +66,9 @@ export default function TwinkleSpikes({ size }: { size?: string }) {
 			>
 				<g
 					fill="none"
-					stroke-width="0.75"
+					strokeWidth="0.75"
 					stroke="hsl(30, 100%, 40%)"
-					stroke-linecap="round"
+					strokeLinecap="round"
 				>
 					<line
 						x1="480"
