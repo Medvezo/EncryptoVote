@@ -28,9 +28,9 @@ export default function page() {
 								<Label htmlFor="name">Name</Label>
 								<Input id="name" placeholder="Name of your Wallet" />
 							</div>
-							<CryptoAuthButton />
 						</div>
 					</form>
+					<CryptoAuthButton />
 					<aside className="flex justify-center items-center flex-col mt-10">
 						<p className="font-bold text-2xl ">Supported Wallets:</p>
 						<div>
@@ -45,7 +45,7 @@ export default function page() {
 					</aside>
 				</CardContent>
 				<CardFooter className="flex justify-between">
-					<Button variant="outline" >Cancel</Button>
+					<Button variant="outline">Cancel</Button>
 					<Button variant="accent">Add</Button>
 				</CardFooter>
 			</Card>
