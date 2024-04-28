@@ -1,12 +1,9 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import {
-	IconArrowWaveRightUp,
-	IconBoxAlignRightFilled,
 	IconBoxAlignTopLeft,
 	IconClipboardCopy,
 	IconFileBroken,
 	IconSignature,
-	IconTableColumn,
 } from "@tabler/icons-react";
 import { EvervaultCard } from "@/components/ui/encrypted-card";
 import Image from "next/image";
@@ -31,12 +28,11 @@ const items = [
 
 	{
 		title: "Other Wallets support",
-		description:
-			"Support for other wallets will come soon...",
+		description: "Support for other wallets will come soon...",
 		header: (
 			<Image
 				src={"/home/CryptoWallets.svg"}
-				alt="MetaMask Icon"
+				alt="Crypto Currency wallet image with 4 coins"
 				width={600}
 				height={50}
 				className="overflow-hidden m-auto w-fit hover:translate-y-2 rounded-xl hover:scale-95 transition-transform duration-300 ease-out"
