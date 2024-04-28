@@ -20,7 +20,7 @@ const buttonVariants = cva(
 				link: "text-primary underline-offset-4 hover:underline",
 
                 // Custom CTA
-                accent: "bg-primary-orange text-black   hover:bg-amber-600"
+                accent: "bg-amber-500 text-black   hover:bg-amber-600"
 			},
 			size: {
 				default: "h-10 px-4 py-2",
