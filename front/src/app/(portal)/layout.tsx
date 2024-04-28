@@ -8,8 +8,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<>
-			<AppHeader />
-			<MobileSideBar />
+			<AppHeader>
+				<MobileSideBar />
+			</AppHeader>
 			{children}
 		</>
 	);
