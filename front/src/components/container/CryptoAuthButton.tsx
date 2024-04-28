@@ -1,10 +1,13 @@
-"use client";
+"use client"
 
 import { Button } from "../ui/button";
 import { ethers } from "ethers";
 import { useState } from "react";
 import { randomString } from "@/helpers/random";
 import { toast } from "react-toastify";
+import makeBlockie from "ethereum-blockies-base64";
+import Image from "next/image";
+import { Card } from "../ui/card";
 
 export default function CryptoAuthButton() {
 	const [account, setAccount] = useState<string | null>(null);
@@ -58,6 +61,18 @@ export default function CryptoAuthButton() {
 			>
 				Connect Wallet
 			</Button>
+			{account && (
+				<Card className="mt-4 p-4 border rounded-lg shadow-lg flex items-center space-x-3">
+					<Image
+						width={32}
+						height={32}
+						src={makeBlockie(account)}
+						alt="Blockie"
+						className="w-8 h-8 rounded-full"
+					/>
+					<span className="font-semibold truncate max-w-72 lg:max-w-xs">Connected: {account}</span>
+				</Card>
+			)}
 		</div>
 	);
 }
