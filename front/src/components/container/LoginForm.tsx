@@ -39,7 +39,9 @@ export default function LoginForm() {
 	return (
 		<>
 			<section className="max-w-md w-full flex flex-col justify-center items-center gap-10">
-				<Logo size={100} href="#" />
+				<aside className="flex justify-center mr-12">
+					<Logo href="#" size={100} />
+				</aside>{" "}
 				<div className=" mx-auto w-full rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-blue-950">
 					<h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
 						Login to EncryptoVote
@@ -52,7 +54,7 @@ export default function LoginForm() {
 							<Label htmlFor="email">Email Address</Label>
 							<Input
 								id="email"
-								placeholder="example@gmail.com"
+								placeholder="example@domain.com"
 								type="email"
 								value={email}
 								onChange={(e: any) => setEmail(e.target.value)}
