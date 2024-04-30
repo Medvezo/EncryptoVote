@@ -1,6 +1,7 @@
 import axios from "axios";
 
-type UserData = {
+type UserRegisterData = {
+	name: string;
 	email: string;
 	password: string;
 };
@@ -13,15 +14,15 @@ export const login =  async (email: string, password: string) => {
             password: password
         });
         return response.data;
-    } catch (error) {
+    } catch (error:any) {
         throw error.response.data;
     }
 };
 
 // Function to handle registration requests
-export const register = async (userData: UserData) => {
+export const register = async (userData: UserRegisterData) => {
 	try {
-		const response = await axios.post("/signup", userData);
+		const response = await axios.post("api/signup", userData);
 		return response.data;
 	} catch (error: any) {
 		throw error.response.data;
