@@ -9,3 +9,7 @@ Details to install and use this project locally located in Readme markdowns for 
 
 ## License
 This project is licensed under [MIT License](LICENSE.txt) - see the LICENSE file for details.
+
+
+## To run Content Layer for Blog command:
+- npx contentlayer build; npx ts-node generateBlogNames.ts
