@@ -7,6 +7,7 @@ import { BottomGradient } from "@/components/common/BottomGradient";
 import { register } from "@/helpers/axiosFunc";
 import LabelInputContainer from "./LabelInputContainer";
 import TwinkleSpikes from "../common/TwinkleSpikes";
+import Link from "next/link";
 
 export default function SignupForm() {
 	const [name, setName] = useState("");
@@ -100,6 +101,12 @@ export default function SignupForm() {
 
 					<div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 				</form>
+				<div className="mt-4 text-center text-sm">
+					Already have an account?{" "}
+					<Link href="/login" className="underline">
+						Log in
+					</Link>
+				</div>
 			</div>
 			<TwinkleSpikes />
 		</>
