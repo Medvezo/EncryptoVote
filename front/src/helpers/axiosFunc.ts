@@ -6,20 +6,22 @@ type UserData = {
 };
 
 // Function to handle login requests
-export const login = async (userData: UserData) => {
+export const login =  async (email: string, password: string) => {
     try {
-        console.log("first data sent by front");
-        const response = await axios.post("/api/login", userData);
-		return response.data;
-	} catch (error: any) {
-		throw error.response.data;
-	}
+        const response = await axios.post('http://127.0.0.1:8000/login', {
+            email: email,
+            password: password
+        });
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
 };
 
 // Function to handle registration requests
 export const register = async (userData: UserData) => {
 	try {
-		const response = await axios.post("/api/signup", userData);
+		const response = await axios.post("/signup", userData);
 		return response.data;
 	} catch (error: any) {
 		throw error.response.data;
