@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 		const reqBody = await request.json();
 
 		// Make the POST request to the Laravel backend with axios to create a new user.
-		const response = await axiosBase.post("/signup", reqBody);
+		const response = await axiosBase.post("http://127.0.0.1:8000/register", reqBody);
 		console.log("Signup request sent", reqBody);
 
 		// Create a new NextResponse object with the response data and status.
