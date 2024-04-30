@@ -23,7 +23,7 @@ export default function SignupForm() {
 		}
 
 		try {
-			const userData = { name, email, password };
+			const userData = { name, email, password, password_confirmation:repeatPassword };
 			const data = await register(userData);
 			console.log("Registration successful", data);
 			// Additional actions upon successful registration, e.g., redirect to dashboard
