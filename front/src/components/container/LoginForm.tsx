@@ -1,26 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "@/helpers/axiosFunc"; 
+import { login } from "@/helpers/axiosFunc";
 import { Label } from "@/components/ui/AceLabel";
 import { Input } from "@/components/ui/AceInput";
 import { BottomGradient } from "../common/BottomGradient";
 import LabelInputContainer from "./LabelInputContainer";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			const data = await login(email, password);
-			console.log("Login successful", data);
-			// Handle successful login (e.g., redirect user to dashboard)
-		} catch (error) {
-			console.error("Login failed", error);
-			// Handle login error (e.g., display error message)
-		}
+		const router = useRouter(); // for redirecting
+
+		toast
+			.promise(login(email, password), {
+				pending: "Logging in...",
+				success: "Logged in successfully! 🎉", 
+				error: "Login failed! Please check your credentials and retry again",
+			})
+			.then((data) => {
+				console.log("Login successful", data);      //! delete later
+				router.push("/dashboard"); // redirect to dashboard on success
+			})
+			.catch((error) => {
+                toast.error("Some unexpected error happened, please try again")
+				console.error("Login failed", error);       //! delete later
+			});
 	};
 
 	return (
