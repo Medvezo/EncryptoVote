@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/AceLabel";
 import { Input } from "@/components/ui/AceInput";
-import { cn } from "@/utils/cn";
 import { BottomGradient } from "@/components/common/BottomGradient";
-import { register } from "@/helpers/axiosFunc"; // Assuming this is the correct path to your axios functions
+import { register } from "@/helpers/axiosFunc"; 
+import LabelInputContainer from "./LabelInputContainer";
 
 export default function SignupForm() {
 	const [name, setName] = useState("");
@@ -23,7 +23,12 @@ export default function SignupForm() {
 		}
 
 		try {
-			const userData = { name, email, password, password_confirmation:repeatPassword };
+			const userData = {
+				name,
+				email,
+				password,
+				password_confirmation: repeatPassword,
+			};
 			const data = await register(userData);
 			console.log("Registration successful", data);
 			// Additional actions upon successful registration, e.g., redirect to dashboard
@@ -85,7 +90,8 @@ export default function SignupForm() {
 
 				<button
 					className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset]"
-					type="submit">
+					type="submit"
+				>
 					Sign up &rarr;
 					<BottomGradient />
 				</button>
@@ -96,16 +102,3 @@ export default function SignupForm() {
 	);
 }
 
-const LabelInputContainer = ({
-	children,
-	className,
-}: {
-	children: React.ReactNode;
-	className?: string;
-}) => {
-	return (
-		<div className={cn("flex flex-col space-y-2 w-full", className)}>
-			{children}
-		</div>
-	);
-};
