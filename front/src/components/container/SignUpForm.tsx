@@ -9,6 +9,8 @@ import LabelInputContainer from "./LabelInputContainer";
 import TwinkleSpikes from "../common/TwinkleSpikes";
 import Link from "next/link";
 import Logo from "../common/Logo";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function SignupForm() {
 	const [name, setName] = useState("");
@@ -18,27 +20,35 @@ export default function SignupForm() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		const router = useRouter(); // For redirecting
 
-		// Optional: Check if passwords match
 		if (password !== repeatPassword) {
-			console.error("Passwords do not match");
-			return; // Prevent submission if passwords do not match
+			toast.error("Passwords don't match");
+			return; // break if does not match
 		}
 
-		try {
-			const userData = {
-				name,
-				email,
-				password,
-				password_confirmation: repeatPassword,
-			};
-			const data = await register(userData);
-			console.log("Registration successful", data);
-			// Additional actions upon successful registration, e.g., redirect to dashboard
-		} catch (error) {
-			console.error("Registration failed", error);
-			// Handle registration error, e.g., display error message
-		}
+		const userData = {
+			name,
+			email,
+			password,
+			password_confirmation: repeatPassword, 
+		};
+
+		toast
+			.promise(register(userData), {
+				pending: "Registering...",
+				success: "Registration successful! Redirecting to login... 🎉",
+				error:
+					"Registration failed! Please check your credentials and try again.",
+			})
+			.then((data) => {
+				console.log("Registration successful", data); 		//! delete later
+				router.push("/login"); // redirect to login on success
+			})
+			.catch((error) => {
+				toast.error("Some unexpected error happened, please try again.");
+				console.error("Registration failed", error); 		//! delete later
+			});
 	};
 
 	return (
@@ -63,6 +73,7 @@ export default function SignupForm() {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
+								required
 							/>
 						</LabelInputContainer>
 						<LabelInputContainer className="mb-4">
@@ -73,6 +84,7 @@ export default function SignupForm() {
 								type="email"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
+								required
 							/>
 						</LabelInputContainer>
 						<LabelInputContainer className="mb-4">
@@ -83,6 +95,7 @@ export default function SignupForm() {
 								type="password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
+								required
 							/>
 						</LabelInputContainer>
 						<LabelInputContainer className="mb-8">
@@ -93,6 +106,7 @@ export default function SignupForm() {
 								type="password"
 								value={repeatPassword}
 								onChange={(e) => setRepeatPassword(e.target.value)}
+								required
 							/>
 						</LabelInputContainer>
 

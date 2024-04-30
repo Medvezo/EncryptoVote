@@ -58,6 +58,7 @@ export default function LoginForm() {
 								type="email"
 								value={email}
 								onChange={(e: any) => setEmail(e.target.value)}
+                                required
 							/>
 						</LabelInputContainer>
 						<LabelInputContainer>
@@ -68,6 +69,7 @@ export default function LoginForm() {
 								type="password"
 								value={password}
 								onChange={(e: any) => setPassword(e.target.value)}
+                                required
 							/>
 						</LabelInputContainer>
 						<button
