@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Oxanium } from "next/font/google";
 import "./globals.css";
+// React Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const oxanium = Oxanium({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Encrypto Vote",
@@ -17,7 +20,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className="dark">
-			<body className={inter.className}>{children}</body>
+			<body className={oxanium.className}>
+				{children}
+				<ToastContainer theme="colored" />
+			</body>
 		</html>
 	);
 }

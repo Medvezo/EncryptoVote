@@ -8,7 +8,7 @@ type UserData = {
 // Function to handle login requests
 export const login =  async (email: string, password: string) => {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/login', {
+        const response = await axios.post('api/login', {
             email: email,
             password: password
         });

@@ -1,14 +1,12 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import {
-	IconArrowWaveRightUp,
-	IconBoxAlignRightFilled,
 	IconBoxAlignTopLeft,
 	IconClipboardCopy,
 	IconFileBroken,
 	IconSignature,
-	IconTableColumn,
 } from "@tabler/icons-react";
 import { EvervaultCard } from "@/components/ui/encrypted-card";
+import Image from "next/image";
 
 const Skeleton = () => (
 	<div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
@@ -27,6 +25,20 @@ const items = [
 		header: <Skeleton />,
 		icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
 	},
+
+	{
+		title: "Other Wallets support",
+		description: "Support for other wallets will come soon...",
+		header: (
+			<Image
+				src={"/home/CryptoWallets.svg"}
+				alt="Crypto Currency wallet image with 4 coins"
+				width={600}
+				height={50}
+				className="overflow-hidden m-auto w-fit hover:translate-y-2 rounded-xl hover:scale-95 transition-transform duration-300 ease-out"
+			/>
+		),
+	},
 	{
 		title: "The Art of Design",
 		description: "Discover the beauty of thoughtful and functional design.",
@@ -34,17 +46,17 @@ const items = [
 		icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
 	},
 	{
-		title: "The Power of Communication",
-		description:
-			"Understand the impact of effective communication in our lives.",
-		header: <Skeleton />,
-		icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
-	},
-	{
-		title: "The Pursuit of Knowledge",
-		description: "Join the quest for understanding and enlightenment.",
-		header: <Skeleton />,
-		icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
+		title: "MetaMask Support",
+		description: "Vote with wallet that supports 450,000+ coins",
+		header: (
+			<Image
+				src={"/home/MetaMaskIcon.svg"}
+				alt="MetaMask Icon"
+				width={150}
+				height={50}
+				className="overflow-hidden w-full h-full hover:translate-y-2 hover:rotate-6 transition-transform duration-300 ease-out"
+			/>
+		),
 	},
 	{
 		title: "The Joy of Creation",
@@ -55,7 +67,7 @@ const items = [
 	{
 		title: "The Spirit of Adventure",
 		description: "Embark on exciting journeys and thrilling discoveries.",
-		header: <EvervaultCard text={'Encrypted'}/>,
+		header: <EvervaultCard text={"Encrypted"} />,
 	},
 ];
 

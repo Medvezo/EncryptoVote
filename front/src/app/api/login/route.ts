@@ -1,6 +1,7 @@
 // Import required modules
 import { NextRequest, NextResponse } from "next/server";
 import axiosBase from "@/helpers/axiosBase";
+import axios from "axios";
 
 // The POST function is defined to handle POST requests specifically.
 export async function POST(request: NextRequest) {
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
 		const reqBody = await request.json();
 
 		// Make the POST request to the Laravel backend with axios.
-		const response = await axiosBase.post("/login", reqBody);
+		const response = await axios.post("http://127.0.0.1:8000/login", reqBody);
 		console.log("Login request sent", reqBody);
 
 		// Create a new NextResponse object with the response data and status.
