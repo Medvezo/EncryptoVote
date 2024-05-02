@@ -1,96 +1,61 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("ElectionFactory and Election Contracts", function () {
-    let ElectionFactory, electionFactory, Election, owner, addr1, addr2;
+describe("Ballot Contract", function () {
+	let Ballot;
+	let ballot;
+	let owner;
+	let addr1;
+	let addr2;
+	let candidates = ["Alice", "Bob"];
 
-    beforeEach(async function () {
-        // Get contract factories and signers
-        ElectionFactory = await ethers.getContractFactory("ElectionFactory");
-        Election = await ethers.getContractFactory("Election");
-        [owner, addr1, addr2] = await ethers.getSigners();
+	beforeEach(async function () {
+		[owner, addr1, addr2] = await ethers.getSigners();
+		Ballot = await ethers.getContractFactory("Ballot");
+		ballot = await Ballot.deploy(candidates);
+	});
 
-        // Deploy the ElectionFactory contract
-        electionFactory = await ElectionFactory.deploy();
-    });
+	describe("Deployment", function () {
+		it("Should set the right owner", async function () {
+			expect(await ballot.chairperson()).to.equal(owner.address);
+		});
 
-    describe("ElectionFactory deployment", function () {
-        it("Should deploy the ElectionFactory", async function () {
-            expect(electionFactory.address).to.be.properAddress;
-        });
-    });
+		it("Should assign the correct initial candidates", async function () {
+			expect((await ballot.candidates(0)).name).to.equal("Alice");
+			expect((await ballot.candidates(1)).name).to.equal("Bob");
+		});
+	});
 
-    describe("Election creation", function () {
-        it("Should create a new Election and store its address", async function () {
-            const email = "test@example.com";
-            const name = "Test Election";
-            const description = "A test election";
+	describe("Voting", function () {
+		beforeEach(async function () {
+			await ballot.startVote(); // Ensure voting is started
+		});
 
-            await electionFactory.createElection(email, name, description);
-            const deployedElection = await electionFactory.getDeployedElection(email);
+		it("Allows a voter to cast a vote", async function () {
+			await ballot.giveRightToVote(addr1.address);
+			await ballot.connect(addr1).vote(1);
+			const candidateBob = await ballot.candidates(1);
+			expect(candidateBob.voteCount).to.equal(1);
+		});
 
-            expect(deployedElection.deployedAddress).to.be.properAddress;
-            expect(deployedElection.name).to.equal(name);
-            expect(deployedElection.description).to.equal(description);
-        });
+		it("Prevents double voting", async function () {
+			await ballot.giveRightToVote(addr1.address);
+			await ballot.connect(addr1).vote(0);
+			await expect(ballot.connect(addr1).vote(0)).to.be.revertedWith(
+				"Already voted."
+			);
+		});
+	});
 
-        it("Should revert if an election is created with the same email", async function () {
-            const email = "duplicate@example.com";
-            await electionFactory.createElection(email, "Initial Election", "Initial Description");
-
-            await expect(
-                electionFactory.createElection(email, "Duplicate Election", "Duplicate Description")
-            ).to.be.revertedWith("Election already exists.");
-        });
-    });
-
-    describe("Election interactions", function () {
-        let election;
-
-        beforeEach(async function () {
-            const email = "unique@example.com";
-            await electionFactory.createElection(email, "New Election", "Description");
-            const deployedElectionDetail = await electionFactory.getDeployedElection(email);
-            election = Election.attach(deployedElectionDetail.deployedAddress);
-        });
-
-        it("Should allow owner to add candidates", async function () {
-            const candidateName = "Candidate 1";
-            const candidateDescription = "Description 1";
-            const imgHash = "imagehash123";
-
-            await election.addCandidate(candidateName, candidateDescription, imgHash);
-            const candidate = await election.getCandidate(0);
-
-            expect(candidate.name).to.equal(candidateName);
-            expect(candidate.voteCount).to.equal(0);
-        });
-
-        it("Should allow voters to vote and prevent double voting", async function () {
-            await election.addCandidate("Candidate 1", "Description 1", "img1");
-            await election.connect(addr1).vote(0);
-
-            await expect(election.connect(addr1).vote(0)).to.be.revertedWith("Error: You cannot double vote");
-
-            const candidate = await election.getCandidate(0);
-            expect(candidate.voteCount).to.equal(1);
-        });
-    });
-
-    describe("Access Control", function () {
-        let election;
-
-        beforeEach(async function () {
-            const email = "accesscontrol@example.com";
-            await electionFactory.createElection(email, "Restricted Election", "Restricted Description");
-            const deployedElectionDetail = await electionFactory.getDeployedElection(email);
-            election = Election.attach(deployedElectionDetail.deployedAddress);
-        });
-
-        it("Should prevent non-owners from adding candidates", async function () {
-            await expect(
-                election.connect(addr1).addCandidate("Unauthorized", "No Access", "nohash")
-            ).to.be.revertedWith("Error: Access Denied.");
-        });
-    });
+	describe("Management", function () {
+		it("Allows only chairperson to start and end voting", async function () {
+			await expect(ballot.connect(addr1).startVote()).to.be.revertedWith(
+				"Only chairperson can start and end the voting"
+			);
+			await ballot.startVote();
+			await expect(ballot.startVote()).to.be.revertedWith(
+				"it must be in Started"
+			);
+		});
+	});
 });
