@@ -10,7 +10,7 @@ import TwinkleSpikes from "../common/TwinkleSpikes";
 import Link from "next/link";
 import Logo from "../common/Logo";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
 	const [name, setName] = useState("");
@@ -18,9 +18,10 @@ export default function SignupForm() {
 	const [password, setPassword] = useState("");
 	const [repeatPassword, setRepeatPassword] = useState("");
 
+	const router = useRouter(); // For redirecting
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const router = useRouter(); // For redirecting
 
 		if (password !== repeatPassword) {
 			toast.error("Passwords don't match");

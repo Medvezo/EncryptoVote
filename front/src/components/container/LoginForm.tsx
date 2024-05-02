@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/AceLabel";
 import { Input } from "@/components/ui/AceInput";
 import { BottomGradient } from "../common/BottomGradient";
 import LabelInputContainer from "./LabelInputContainer";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import TwinkleSpikes from "../common/TwinkleSpikes";
 import Link from "next/link";
@@ -16,9 +16,10 @@ export default function LoginForm() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	const router = useRouter(); // for redirecting
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const router = useRouter(); // for redirecting
 
 		toast
 			.promise(login(email, password), {
