@@ -1,128 +1,135 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+// SPDX-License-Identifier: GPL-3.0
 
-// import "hardhat/console.sol";
+pragma solidity >=0.7.0 <0.9.0;
+pragma abicoder v2;
 
-contract ElectionFactory {
-    struct ElectionDetail {
-        address deployedAddress;
-        string name;
-        string description;
+/**
+ * @title Ballot
+ * @dev Implements voting process along with vote delegation
+ */
+contract Ballot {
+    struct Voter {
+        uint weight; // weight is accumulated by delegation
+        bool voted; // if true, that person already voted
+        uint vote; // index of the voted proposal
     }
-
-    mapping(string => ElectionDetail) public electionsByEmail;
-
-    function createElection(
-        string memory email,
-        string memory name,
-        string memory description
-    ) public {
-        require(
-            bytes(electionsByEmail[email].name).length == 0,
-            "Election already exists."
-        );
-
-        Election newElection = new Election(msg.sender, name, description);
-
-        electionsByEmail[email] = ElectionDetail({
-            deployedAddress: address(newElection),
-            name: name,
-            description: description
-        });
-    }
-
-    function getDeployedElection(
-        string memory email
-    ) public view returns (ElectionDetail memory) {
-        require(
-            bytes(electionsByEmail[email].name).length != 0,
-            "No election found."
-        );
-        return electionsByEmail[email];
-    }
-}
-
-contract Election {
-    address public electionAuthority;
-    string public electionName;
-    string public electionDescription;
 
     struct Candidate {
-        string name;
-        string description;
-        string imgHash;
-        uint256 voteCount;
+        string name; // candidate name
+        uint voteCount; // number of accumulated votes
     }
 
-    struct Voter {
-        uint256 candidateIdVoted;
-        bool voted;
-    }
+    address public chairperson;
 
-    mapping(uint256 => Candidate) public candidates;
     mapping(address => Voter) public voters;
 
-    uint256 public numCandidates;
-    uint256 public numVoters;
+    Candidate[] public candidates;
 
-    constructor(
-        address authority,
-        string memory name,
-        string memory description
-    ) {
-        electionAuthority = authority;
-        electionName = name;
-        electionDescription = description;
+    enum State {
+        Created,
+        Voting,
+        Ended
+    } // State of voting period
+
+    State public state;
+
+    constructor(string[] memory candidateNames) {
+        chairperson = msg.sender;
+        voters[chairperson].weight = 1;
+        state = State.Created;
+
+        for (uint i = 0; i < candidateNames.length; i++) {
+            candidates.push(Candidate({name: candidateNames[i], voteCount: 0}));
+        }
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == electionAuthority, "Error: Access Denied.");
+    // MODIFIERS
+    modifier onlySmartContractOwner() {
+        require(
+            msg.sender == chairperson,
+            "Only chairperson can start and end the voting"
+        );
         _;
     }
 
-    function addCandidate(
-        string memory candidateName,
-        string memory candidateDescription,
-        string memory imgHash
-    ) public onlyOwner {
-        candidates[numCandidates++] = Candidate({
-            name: candidateName,
-            description: candidateDescription,
-            imgHash: imgHash,
-            voteCount: 0
-        });
+    modifier CreatedState() {
+        require(state == State.Created, "it must be in Started");
+        _;
     }
 
-    function vote(uint256 candidateID) public {
-        require(!voters[msg.sender].voted, "Error: You cannot double vote.");
-
-        voters[msg.sender] = Voter({
-            candidateIdVoted: candidateID,
-            voted: true
-        });
-
-        numVoters++;
-        candidates[candidateID].voteCount++;
+    modifier VotingState() {
+        require(state == State.Voting, "it must be in Voting Period");
+        _;
     }
 
-    function winnerCandidate() public view onlyOwner returns (uint256) {
-        uint256 largestVotes = 0;
-        uint256 candidateID = 0;
+    modifier EndedState() {
+        require(state == State.Ended, "it must be in Ended Period");
+        _;
+    }
 
-        for (uint256 i = 0; i < numCandidates; i++) {
-            if (candidates[i].voteCount > largestVotes) {
-                largestVotes = candidates[i].voteCount;
-                candidateID = i;
-            }
+    function addCandidates(string[] memory candidateNames) public EndedState {
+        state = State.Created;
+        for (uint i = 0; i < candidateNames.length; i++) {
+            candidates.push(Candidate({name: candidateNames[i], voteCount: 0}));
         }
-        return candidateID;
     }
 
-    function getElectionDetails()
+    // to start the voting period
+    function startVote() public onlySmartContractOwner CreatedState {
+        state = State.Voting;
+    }
+
+    /*
+     * to end the voting period
+     * can only end if the state in Voting period
+     */
+    function endVote() public onlySmartContractOwner VotingState {
+        state = State.Ended;
+    }
+
+    /**
+     * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
+     * @param voter address of voter
+     */
+    function giveRightToVote(address voter) public {
+        require(
+            msg.sender == chairperson,
+            "Only chairperson can give right to vote."
+        );
+        require(!voters[voter].voted, "The voter already voted.");
+        require(voters[voter].weight == 0);
+        voters[voter].weight = 1;
+    }
+
+    /**
+     * @dev Give your vote (including votes delegated to you) to candidate 'candidates[candidate].name'.
+     * @param candidate index of candidate in the candidates array
+     */
+    function vote(uint candidate) public VotingState {
+        Voter storage sender = voters[msg.sender];
+        require(sender.weight != 0, "Has no right to vote");
+        require(!sender.voted, "Already voted.");
+        sender.voted = true;
+        sender.vote = candidate;
+
+        // If 'candidate' is out of the range of the array,
+        // this will throw automatically and revert all
+        // changes.
+        candidates[candidate].voteCount += sender.weight;
+    }
+
+    function winningCandidate()
         public
         view
-        returns (string memory, string memory)
+        EndedState
+        returns (string memory winnerName_)
     {
-        return (electionName, electionDescription);
+        uint winningVoteCount = 0;
+        for (uint p = 0; p < candidates.length; p++) {
+            if (candidates[p].voteCount > winningVoteCount) {
+                winningVoteCount = candidates[p].voteCount;
+                winnerName_ = candidates[p].name;
+            }
+        }
     }
 }
