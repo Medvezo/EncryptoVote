@@ -1,4 +1,5 @@
 import BentoGridSection from "@/components/container/BentoGridSection";
+import FaqSection from "@/components/container/FaqSection";
 import HeroSection from "@/components/container/HeroSection";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 
@@ -12,6 +13,7 @@ export default function Home() {
 				showGradient={false}
 			/>
 			<BentoGridSection />
+			<FaqSection />
 		</main>
 	);
 }
