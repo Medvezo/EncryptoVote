@@ -1,134 +1,104 @@
 // SPDX-License-Identifier: GPL-3.0
-
 pragma solidity >=0.7.0 <0.9.0;
 pragma abicoder v2;
 
 /**
  * @title Ballot
- * @dev Implements voting process along with vote delegation
+ * @dev Implements voting process along with vote delegation and multiple polls management
  */
 contract Ballot {
     struct Voter {
-        uint weight; // weight is accumulated by delegation
-        bool voted; // if true, that person already voted
+        uint weight; 
+        bool voted; // whether person already voted or not
         uint vote; // index of the voted proposal
     }
 
     struct Candidate {
-        string name; // candidate name
-        uint voteCount; // number of accumulated votes
+        string name;
+        uint voteCount;
     }
 
-    address public chairperson;
+    struct Poll {
+        mapping(address => Voter) voters;
+        Candidate[] candidates;
+        address chairperson;
+        bool isActive;
+    }
 
-    mapping(address => Voter) public voters;
+    mapping(uint => Poll) public polls;
+    uint public nextPollId;
 
-    Candidate[] public candidates;
+    // Events
+    event PollCreated(uint pollId, string[] candidateNames);
+    event VoteCast(uint pollId, uint candidateIndex);
+    event PollStatusChanged(uint pollId, bool isActive);
 
-    enum State {
-        Created,
-        Voting,
-        Ended
-    } // State of voting period
-
-    State public state;
-
-    constructor(string[] memory candidateNames) {
-        chairperson = msg.sender;
-        voters[chairperson].weight = 1;
-        state = State.Created;
-
+    // Create a new poll with initial candidates
+    function createPoll(string[] memory candidateNames) public {
+        Poll storage p = polls[nextPollId++];
+        p.chairperson = msg.sender;
+        p.isActive = true;
         for (uint i = 0; i < candidateNames.length; i++) {
-            candidates.push(Candidate({name: candidateNames[i], voteCount: 0}));
+            p.candidates.push(
+                Candidate({name: candidateNames[i], voteCount: 0})
+            );
         }
+        emit PollCreated(nextPollId - 1, candidateNames);
     }
 
-    // MODIFIERS
-    modifier onlySmartContractOwner() {
+    // Give a voter the right to vote on a specific poll
+    function giveRightToVote(uint pollId, address voter) public {
         require(
-            msg.sender == chairperson,
-            "Only chairperson can start and end the voting"
+            msg.sender == polls[pollId].chairperson,
+            "Only chairperson can give voting rights."
         );
-        _;
-    }
-
-    modifier CreatedState() {
-        require(state == State.Created, "it must be in Started");
-        _;
-    }
-
-    modifier VotingState() {
-        require(state == State.Voting, "it must be in Voting Period");
-        _;
-    }
-
-    modifier EndedState() {
-        require(state == State.Ended, "it must be in Ended Period");
-        _;
-    }
-
-    function addCandidates(string[] memory candidateNames) public EndedState {
-        state = State.Created;
-        for (uint i = 0; i < candidateNames.length; i++) {
-            candidates.push(Candidate({name: candidateNames[i], voteCount: 0}));
-        }
-    }
-
-    // to start the voting period
-    function startVote() public onlySmartContractOwner CreatedState {
-        state = State.Voting;
-    }
-
-    /*
-     * to end the voting period
-     * can only end if the state in Voting period
-     */
-    function endVote() public onlySmartContractOwner VotingState {
-        state = State.Ended;
-    }
-
-    /**
-     * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
-     * @param voter address of voter
-     */
-    function giveRightToVote(address voter) public {
+        require(!polls[pollId].voters[voter].voted, "The voter already voted.");
         require(
-            msg.sender == chairperson,
-            "Only chairperson can give right to vote."
+            polls[pollId].voters[voter].weight == 0,
+            "Voter already has voting rights."
         );
-        require(!voters[voter].voted, "The voter already voted.");
-        require(voters[voter].weight == 0);
-        voters[voter].weight = 1;
+
+        polls[pollId].voters[voter].weight = 1;
     }
 
-    /**
-     * @dev Give your vote (including votes delegated to you) to candidate 'candidates[candidate].name'.
-     * @param candidate index of candidate in the candidates array
-     */
-    function vote(uint candidate) public VotingState {
-        Voter storage sender = voters[msg.sender];
-        require(sender.weight != 0, "Has no right to vote");
+    // Cast a vote on a specific poll
+    function vote(uint pollId, uint candidateIndex) public {
+        Poll storage p = polls[pollId];
+        require(p.isActive, "Poll is not active.");
+        Voter storage sender = p.voters[msg.sender];
+        require(sender.weight != 0, "No right to vote.");
         require(!sender.voted, "Already voted.");
-        sender.voted = true;
-        sender.vote = candidate;
 
-        // If 'candidate' is out of the range of the array,
-        // this will throw automatically and revert all
-        // changes.
-        candidates[candidate].voteCount += sender.weight;
+        sender.voted = true;
+        sender.vote = candidateIndex;
+        p.candidates[candidateIndex].voteCount += sender.weight;
+        emit VoteCast(pollId, candidateIndex);
     }
 
-    function winningCandidate()
-        public
-        view
-        EndedState
-        returns (string memory winnerName_)
-    {
+    // End the voting period for a poll
+    function endPoll(uint pollId) public {
+        require(
+            msg.sender == polls[pollId].chairperson,
+            "Only chairperson can end the poll."
+        );
+        require(polls[pollId].isActive, "Poll is already ended.");
+
+        polls[pollId].isActive = false;
+        emit PollStatusChanged(pollId, false);
+    }
+
+    // Get the winning candidate for a poll
+    function getWinningCandidate(
+        uint pollId
+    ) public view returns (string memory winnerName) {
+        Poll storage p = polls[pollId];
+        require(!p.isActive, "Poll is still active.");
+
         uint winningVoteCount = 0;
-        for (uint p = 0; p < candidates.length; p++) {
-            if (candidates[p].voteCount > winningVoteCount) {
-                winningVoteCount = candidates[p].voteCount;
-                winnerName_ = candidates[p].name;
+        for (uint i = 0; i < p.candidates.length; i++) {
+            if (p.candidates[i].voteCount > winningVoteCount) {
+                winningVoteCount = p.candidates[i].voteCount;
+                winnerName = p.candidates[i].name;
             }
         }
     }
