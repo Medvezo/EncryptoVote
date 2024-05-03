@@ -25,14 +25,13 @@ export default function LoginForm() {
 			.promise(login(email, password), {
 				pending: "Logging in...",
 				success: "Logged in successfully! 🎉",
-				error: "Login failed! Please check your credentials and retry again",
 			})
 			.then((data) => {
 				console.log("Login successful", data); //! delete later
 				router.push("/dashboard"); // redirect to dashboard on success
 			})
 			.catch((error) => {
-				toast.error("Some unexpected error happened, please try again");
+				toast.error(`${error.message}`);
 				console.error("Login failed", error); //! delete later
 			});
 	};
