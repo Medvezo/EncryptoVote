@@ -8,7 +8,7 @@ pragma abicoder v2;
  */
 contract Ballot {
     struct Voter {
-        uint weight; 
+        uint weight;
         bool voted; // whether person already voted or not
         uint vote; // index of the voted proposal
     }
@@ -32,6 +32,21 @@ contract Ballot {
     event PollCreated(uint pollId, string[] candidateNames);
     event VoteCast(uint pollId, uint candidateIndex);
     event PollStatusChanged(uint pollId, bool isActive);
+
+    // getters
+    function getVoter(
+        uint pollId,
+        address voter
+    ) public view returns (Voter memory) {
+        return polls[pollId].voters[voter];
+    }
+
+    function getCandidate(
+        uint pollId,
+        uint candidateIndex
+    ) public view returns (Candidate memory) {
+        return polls[pollId].candidates[candidateIndex];
+    }
 
     // Create a new poll with initial candidates
     function createPoll(string[] memory candidateNames) public {
