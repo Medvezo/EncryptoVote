@@ -1,19 +1,22 @@
-// CANDIDATE_NAMES="Mansur,Nicat,Oglan" npx hardhat run scripts/deploy.js
-async function main() {
-	const candidateNames = process.env.CANDIDATE_NAMES.split(",");
-	const Ballot = await ethers.getContractFactory("Ballot");
+const { ethers } = require("hardhat");
 
-	try {
-		const ballot = await Ballot.deploy(candidateNames);
-		console.log("Ballot deployed to:", ballot.target);
-	} catch (error) {
-		console.error("Failed to deploy the Ballot contract:", error);
-	}
+async function main() {
+	const [deployer] = await ethers.getSigners();
+
+	console.log("Deploying contracts with the account:", deployer.address);
+	const accountBalance = await deployer.provider.getBalance(deployer.address);
+	console.log("Account balance:", accountBalance.toString());
+
+	const Ballot = await ethers.getContractFactory("Ballot");
+	const ballot = await Ballot.deploy();
+	await ballot.waitForDeployment();  
+
+	console.log("Ballot contract deployed to:", ballot.target);
 }
 
 main()
 	.then(() => process.exit(0))
-	.catch((error) => {
+	.catch(error => {
 		console.error(error);
 		process.exit(1);
 	});
