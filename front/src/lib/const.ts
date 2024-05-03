@@ -31,10 +31,6 @@ export const web3Faqs = [
         answer: "Ensuring the security of your digital assets can be achieved by using hardware wallets, enabling two-factor authentication, using strong, unique passwords for your wallets, and never sharing your private keys."
     },
     {
-        question: "What are NFTs and how do they work?",
-        answer: "NFTs, or Non-Fungible Tokens, represent ownership of unique items on a blockchain. They can be used to represent digital art, collectibles, and other assets. Each NFT has distinct properties and is not interchangeable."
-    },
-    {
         question: "Can I reverse a cryptocurrency transaction?",
         answer: "Cryptocurrency transactions are generally irreversible once they have been confirmed on the blockchain. This is why it's important to double-check all transaction details before sending."
     },
@@ -46,25 +42,21 @@ export const web3Faqs = [
         question: "How do decentralized applications (dApps) differ from traditional apps?",
         answer: "dApps run on a decentralized network, typically a blockchain, as opposed to traditional apps that run on centralized servers. This allows dApps to operate without a central authority."
     },
-    {
-        question: "What is decentralized finance (DeFi)?",
-        answer: "Decentralized finance refers to financial services that are available on a public decentralized blockchain network, making them open to anyone to use, rather than going through middlemen like banks or brokerages."
-    }
 ];
 
 
 export const accountFaqs = [
     {
         question: "How do I create an account?",
-        answer: "To create an account, choose 'Sign Up' from the home page, fill in the required fields, and follow the registration process."
+        answer: "To create an account, choose 'Make Vote' from the home page, fill in the required fields, and follow the registration process."
     },
     {
         question: "What should I do if I forget my account password?",
         answer: "If you forget your password, use the 'Forgot Password' link on the login page to reset your password through a secure process."
     },
     {
-        question: "Can I change my email address?",
-        answer: "Yes, you can change your email address from your account settings panel after logging in."
+        question: "How do I add my wallet to my account?",
+        answer: "To add your wallet to your account, you can use the 'Connect Wallet' button provided on our platform. This button triggers a process where your Ethereum wallet (e.g., MetaMask) is connected to your account. Just click 'Connect Wallet,' accept the request in your wallet application to share your wallet address, and it will be added to your account. You will see a confirmation on the website with your wallet's avatar, showing that the connection has been successfully established."
     },
     {
         question: "How do I close my account?",
@@ -72,11 +64,11 @@ export const accountFaqs = [
     }
 ];
 
-
+ 
 export const paymentFaqs = [
     {
         question: "What payment methods are accepted?",
-        answer: "We accept a variety of payment methods including credit cards, debit cards, and several forms of cryptocurrency."
+        answer: "We accept a variety of cryptocurrency coins."
     },
     {
         question: "Is it safe to make payments through your platform?",
@@ -89,5 +81,13 @@ export const paymentFaqs = [
     {
         question: "How are transaction fees calculated for crypto payments?",
         answer: "Transaction fees depend on the network load and the transaction complexity. Fees are typically paid to blockchain network validators."
+    },
+    {
+        question: "With which coin would you recommend to pay in our website?",
+        answer: "We STRONGLY do not recommend using Ethereum as its gas fee is so high in comparison with other coins "
+    },
+    {
+        question: "Is our service is free?",
+        answer: "Yes! Our service is absolutely free!"
     }
 ];
