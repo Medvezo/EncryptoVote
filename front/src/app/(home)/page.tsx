@@ -1,6 +1,6 @@
-import BentoGridSection from "@/components/container/BentoGridSection";
-import FaqSection from "@/components/container/FaqSection";
-import HeroSection from "@/components/container/HeroSection";
+import BentoGridSection from "@/components/sections/BentoGridSection";
+import FaqSection from "@/components/sections/FaqSection";
+import HeroSection from "@/components/sections/HeroSection";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 
 export default function Home() {

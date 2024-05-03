@@ -1,5 +1,5 @@
 import { IconPhone, IconMail } from "@tabler/icons-react";
-import ContactForm from "@/components/container/ContactForm";
+import ContactForm from "@/components/forms/ContactForm";
 
 export default function Contact() {
 	return (
