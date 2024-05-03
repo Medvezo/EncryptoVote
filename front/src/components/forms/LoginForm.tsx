@@ -5,7 +5,7 @@ import { login } from "@/helpers/axiosFunc";
 import { Label } from "@/components/ui/AceLabel";
 import { Input } from "@/components/ui/AceInput";
 import { BottomGradient } from "../common/BottomGradient";
-import LabelInputContainer from "./LabelInputContainer";
+import LabelInputContainer from "../container/LabelInputContainer";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import TwinkleSpikes from "../common/TwinkleSpikes";
