@@ -1,7 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
 import { ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -20,17 +17,10 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
 
 // import AddVoteModal from "@/components/container/AddVoteModal";
 import dynamic from "next/dynamic";
+import VotingSection from "@/components/sections/VotingSection";
 const AddVoteModal = dynamic(
 	() => import("@/components/container/AddVoteModal"),
 	{
@@ -82,7 +72,7 @@ export default function Dashboard() {
 							</CardDescription>
 						</CardHeader>
 						<CardContent>
-							
+							<VotingSection />
 						</CardContent>
 						<CardFooter>
 							<div className="text-xs text-muted-foreground">
