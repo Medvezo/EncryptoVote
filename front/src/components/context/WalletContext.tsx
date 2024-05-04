@@ -13,10 +13,10 @@ interface WalletContextType {
 
 // Initial state
 const defaultContext: WalletContextType = {
-    account: null,
-    signer: null,
-    connectWallet: async () => {},
-    disconnectWallet: () => {}
+	account: null,
+	signer: null,
+	connectWallet: async () => {},
+	disconnectWallet: () => {},
 };
 
 const WalletContext = createContext<WalletContextType>(defaultContext);
@@ -50,6 +50,8 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
 						if (signAddress.toLowerCase() === accounts[0].toLowerCase()) {
 							setAccount(accounts[0]);
+							setSigner(signer); 
+
 							resolve("User successfully logged in.");
 						} else {
 							reject("Failed to login.");
