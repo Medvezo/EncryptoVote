@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, Search } from "lucide-react";
+import { CircleUser, Wallet, Plus } from "lucide-react";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -27,7 +27,12 @@ export default function AppHeader({ children }: { children: React.ReactNode }) {
 			{children}
 
 			<div className="flex w-full  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-				<Button className="ml-auto" variant={"accent"}>+</Button>
+				<Link className="ml-auto" href={"/connect-wallet"}>
+					<Button variant={"accent"}>
+						<Wallet className="w-8 h-8 " />
+						<Plus className="w-8 h-8 " />
+					</Button>
+				</Link>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="secondary" size="icon" className="rounded-full">
