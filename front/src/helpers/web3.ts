@@ -1,16 +1,28 @@
 import { ethers } from "ethers";
 import { Poll, Candidate } from "@/components/sections/VotingSection";
 
-const contractABI = require("@/lib/contractABI.json");
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import abiJSON from "@/lib/contractABI.json";
+const contractABI = abiJSON.abi; // Accessing nested ABI array
+
+const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export async function createPoll(
 	candidateNames: string[],
 	signer: ethers.Signer
-) {
+): Promise<number> {
 	const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	const transaction = await contract.createPoll(candidateNames);
-	await transaction.wait();
+	const transactionResponse = await contract.createPoll(candidateNames);
+	const receipt = await transactionResponse.wait();
+	
+	const pollCreatedEvent = receipt.events?.find(
+		(event: any) => event.event === "PollCreated"
+	);
+
+	if (!pollCreatedEvent || !pollCreatedEvent.args) {
+		throw new Error("Poll creation failed, no event found.");
+	}
+	const pollId = pollCreatedEvent.args.pollId.toNumber(); // Convert BigNumber to number if needed
+	return pollId;
 }
 
 export async function giveRightToVote(
