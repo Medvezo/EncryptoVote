@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useWallet } from "@/components/context/WalletContext";
 import { vote, fetchAvailablePolls } from "@/helpers/web3";
 import { Button } from "../ui/button";
+import GrantVoteRightsModal from "../forms/GrantVoteRightsModal";
+import TestButtons from "../common/TestButtons";
 
 export interface Poll {
 	id: number;
@@ -26,14 +28,23 @@ export default function VotingSection() {
 		const fetchPolls = async () => {
 			if (signer) {
 				const availablePolls = await fetchAvailablePolls(signer);
-				setPolls(availablePolls);
+				setPolls(
+					availablePolls.map((poll) => ({
+						...poll,
+						id: poll.id.toString(), // Convert BigNumber to string
+						candidates: poll.candidates.map((candidate) => ({
+							...candidate,
+							name: candidate.name,
+						})),
+					}))
+				);
 			}
 		};
 		fetchPolls();
 	}, [signer]);
 
 	const handleVote = async (pollId: number, candidateIndex: string) => {
-		if (candidateIndex !== "" && signer !== null) {
+		if (candidateIndex !== "" && signer) {
 			try {
 				await vote(pollId, parseInt(candidateIndex), signer);
 				setMessage("Vote successfully cast!");
@@ -53,10 +64,12 @@ export default function VotingSection() {
 					<div key={poll.id} className="poll-card">
 						<h2>Poll {poll.id}</h2>
 						<select
-							value={selectedCandidate.get(poll.id) || ""}
+							value={selectedCandidate.get(Number(poll.id)) || ""}
 							onChange={(e) =>
 								setSelectedCandidate(
-									new Map(selectedCandidate.set(poll.id, e.target.value))
+									new Map(
+										selectedCandidate.set(Number(poll.id), e.target.value)
+									)
 								)
 							}
 						>
@@ -69,7 +82,10 @@ export default function VotingSection() {
 						</select>
 						<Button
 							onClick={() =>
-								handleVote(poll.id, selectedCandidate.get(poll.id) || "")
+								handleVote(
+									Number(poll.id),
+									selectedCandidate.get(Number(poll.id)) || ""
+								)
 							}
 						>
 							Vote
@@ -82,6 +98,8 @@ export default function VotingSection() {
 				</p>
 			)}
 			{message && <p>{message}</p>}
+			<GrantVoteRightsModal />
+			<TestButtons />
 		</div>
 	);
 }
