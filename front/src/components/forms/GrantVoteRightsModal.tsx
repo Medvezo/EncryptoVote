@@ -15,9 +15,12 @@ import { useWallet } from "@/components/context/WalletContext";
 import { giveRightToVote } from "@/helpers/web3";
 import { toast } from "react-toastify";
 
-export default function GrantVoteRightsModal() {
+interface GrantVoteRightsModalProps {
+  pollId?: number;
+}
+
+export default function GrantVoteRightsModal({ pollId }: GrantVoteRightsModalProps) {
 	const [address, setAddress] = useState("");
-	const [pollId, setPollId] = useState("");
 	const { signer } = useWallet();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -29,10 +32,9 @@ export default function GrantVoteRightsModal() {
 		}
 		setIsLoading(true);
 		try {
-			await giveRightToVote(parseInt(pollId), address, signer);
+			await giveRightToVote(pollId, address, signer);
 			toast.success(`Voting rights granted successfully to ${address}`);
 			setAddress("");
-			setPollId("");
 		} catch (error) {
 			console.error("Error granting voting rights:", error);
 			toast.error("Failed to grant voting rights. Please try again.");
@@ -62,13 +64,6 @@ export default function GrantVoteRightsModal() {
 						value={address}
 						onChange={(e) => setAddress(e.target.value)}
 						placeholder="Enter voter's address"
-						required
-					/>
-					<Input
-						type="text"
-						value={pollId}
-						onChange={(e) => setPollId(e.target.value)}
-						placeholder="Enter poll ID"
 						required
 					/>
 					<DialogFooter>
