@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { useWallet } from "@/components/context/WalletContext";
 import { vote, fetchAvailablePolls } from "@/helpers/web3";
 import { Button } from "../ui/button";
@@ -49,7 +48,6 @@ export default function VotingSection() {
 
 	return (
 		<div>
-			<h1>Vote in a Poll</h1>
 			{polls.length > 0 ? (
 				polls.map((poll) => (
 					<div key={poll.id} className="poll-card">
@@ -79,7 +77,9 @@ export default function VotingSection() {
 					</div>
 				))
 			) : (
-				<p>No active votes available.</p>
+				<p className="text-center font-bold text-2xl">
+					No active votes available.
+				</p>
 			)}
 			{message && <p>{message}</p>}
 		</div>

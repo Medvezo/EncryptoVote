@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useMemo } from "react";
+import { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { ethers } from "ethers";
 import { randomString } from "@/helpers/random";
 import { toast } from "react-toastify";
@@ -36,7 +36,8 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
 			const accounts = await ethereum.request({ method: "eth_accounts" });
 			const provider = new ethers.providers.Web3Provider(ethereum);
-			const signer = provider.getSigner();
+			
+			const signer = provider.getSigner();		
 			const randomMsg = randomString(16);
 
 			toast.promise(
@@ -50,7 +51,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
 						if (signAddress.toLowerCase() === accounts[0].toLowerCase()) {
 							setAccount(accounts[0]);
-							setSigner(signer); 
+							setSigner(signer);
 
 							resolve("User successfully logged in.");
 						} else {
