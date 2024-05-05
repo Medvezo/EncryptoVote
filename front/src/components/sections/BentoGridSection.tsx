@@ -1,31 +1,37 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import {
-	IconBoxAlignTopLeft,
-	IconClipboardCopy,
-	IconFileBroken,
-	IconSignature,
-} from "@tabler/icons-react";
 import { EvervaultCard } from "@/components/ui/encrypted-card";
 import Image from "next/image";
-
-const Skeleton = () => (
-	<div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
-);
+import { Meteors } from "../ui/meteors";
+import { HoverBorderGradient } from "../ui/hover-border-gradient";
+import Link from "next/link";
 
 const items = [
 	{
-		title: "The Dawn of Innovation",
-		description: "Explore the birth of groundbreaking ideas and inventions.",
-		header: <Skeleton />,
-		icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
+		title: "The Digital Revolution",
+		description: "Embrace decentralization: Don't fear change; lead it.",
+		header: (
+			<div className="relative overflow-hidden w-full h-full">
+				<Meteors number={50} />
+			</div>
+		),
 	},
 	{
-		title: "The Digital Revolution",
-		description: "Dive into the transformative power of technology.",
-		header: <Skeleton />,
-		icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
+		title: "Deep Dive Immediately",
+		description: "Explore the birth of groundbreaking ideas and inventions.",
+		header: (
+			<div className="w-full h-full items-center flex justify-center text-center">
+				<Link href={"/signup"}>
+					<HoverBorderGradient
+						containerClassName="rounded-full"
+						as="button"
+						className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2"
+					>
+						<span>Start Voting</span>
+					</HoverBorderGradient>
+				</Link>
+			</div>
+		),
 	},
-
 	{
 		title: "Other Wallets support",
 		description: "Support for other wallets will come soon...",
@@ -40,10 +46,9 @@ const items = [
 		),
 	},
 	{
-		title: "The Art of Design",
-		description: "Discover the beauty of thoughtful and functional design.",
-		header: <Skeleton />,
-		icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
+		title: "Privacy is Everything",
+		description: "By using our service you are guaranteed to be encrypted",
+		header: <EvervaultCard text={"Encrypted"} />,
 	},
 	{
 		title: "MetaMask Support",
@@ -57,17 +62,6 @@ const items = [
 				className="overflow-hidden w-full h-full hover:translate-y-2 hover:rotate-6 transition-transform duration-300 ease-out"
 			/>
 		),
-	},
-	{
-		title: "The Joy of Creation",
-		description: "Experience the thrill of bringing ideas to life.",
-		header: <Skeleton />,
-		icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
-	},
-	{
-		title: "The Spirit of Adventure",
-		description: "Embark on exciting journeys and thrilling discoveries.",
-		header: <EvervaultCard text={"Encrypted"} />,
 	},
 ];
 
