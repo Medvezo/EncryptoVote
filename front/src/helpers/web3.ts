@@ -115,6 +115,7 @@ export async function fetchAllPolls(signer: ethers.Signer): Promise<Poll[]> {
 				const candidates = await contract.getCandidates(i);
 				polls.push({
 					id: i,
+					isActive: poll.isActive,
 					candidates: candidates.map((c: any) => ({ name: c.name })),
 				});
 			}

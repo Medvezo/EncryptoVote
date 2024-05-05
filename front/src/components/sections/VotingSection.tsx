@@ -7,6 +7,7 @@ import VotePollsSection from "./VotePollsSection";
 export interface Poll {
 	id: number;
 	candidates: Candidate[];
+	isActive?: boolean;
 }
 
 export interface Candidate {
@@ -17,7 +18,6 @@ export default function VotingSection() {
 	return (
 		<div>
 			<VotePollsSection />
-
 			<ManageCreatedPollSection />
 			<TestButtons />
 		</div>

@@ -17,14 +17,13 @@ export default function ManageCreatedPollSection() {
 	const { signer } = useWallet();
 	const [polls, setPolls] = useState<Poll[]>([]);
 
+	const fetchPolls = async () => {
+		if (signer) {
+			const retrievedPolls = await fetchAllPolls(signer);
+			setPolls(retrievedPolls);
+		}
+	};
 	useEffect(() => {
-		const fetchPolls = async () => {
-			if (signer) {
-				const retrievedPolls = await fetchAllPolls(signer);
-				setPolls(retrievedPolls);
-			}
-		};
-
 		fetchPolls();
 
 		const handlePollCreated = () => fetchPolls(); // handler that refetches polls
@@ -39,6 +38,8 @@ export default function ManageCreatedPollSection() {
 		if (signer) {
 			await endPoll(pollId, signer);
 			alert(`Poll ${pollId} has been ended.`);
+			// Refresh the polls list to reflect the ended poll
+			fetchPolls();
 		}
 	};
 
@@ -59,7 +60,7 @@ export default function ManageCreatedPollSection() {
 	return (
 		<section className="flex gap-10 flex-wrap">
 			{polls.length > 0 ? (
-				polls.map((poll: Poll) => (
+				polls.map((poll) => (
 					<Card
 						key={poll.id}
 						className="poll-card max-w-md min-w-80 lg:min-w-96"
@@ -68,7 +69,6 @@ export default function ManageCreatedPollSection() {
 							<CardTitle className="text-xl font-bold text-amber-500 text-center">
 								Poll ID: {poll.id}
 							</CardTitle>
-							<CardDescription>Canditates:</CardDescription>
 						</CardHeader>
 						<CardContent className="font-bold ">
 							{poll.candidates.map((candidate, index) => (
@@ -76,18 +76,19 @@ export default function ManageCreatedPollSection() {
 							))}
 						</CardContent>
 						<CardFooter className="flex flex-col gap-5">
-							<GrantVoteRightsModal pollId={poll.id} />
-							<div className="col-span flex gap-10">
+							{poll.isActive && <GrantVoteRightsModal pollId={poll.id} />}
+							{poll.isActive ? (
 								<Button
 									variant={"destructive"}
 									onClick={() => handleEndPoll(poll.id)}
 								>
 									End Voting
 								</Button>
-								<Button onClick={() => handleGetWinner(poll.id)}>
+							) : (
+								<Button variant={"success"} onClick={() => handleGetWinner(poll.id)}>
 									Get Winner
 								</Button>
-							</div>
+							)}
 						</CardFooter>
 					</Card>
 				))
