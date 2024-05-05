@@ -16,7 +16,7 @@ export interface Candidate {
 
 export default function VotingSection() {
 	return (
-		<div>
+		<div className="flex flex-col gap-10">
 			<VotePollsSection />
 			<ManageCreatedPollSection />
 			<TestButtons />

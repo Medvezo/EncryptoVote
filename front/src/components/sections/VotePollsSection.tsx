@@ -32,7 +32,7 @@ export default function VotePollsSection() {
 		const fetchPolls = async () => {
 			if (signer) {
 				const availablePolls = await fetchAvailablePolls(signer);
-                setPolls(
+				setPolls(
 					availablePolls.map((poll) => ({
 						...poll,
 						id: poll.id.toString(), // Ensure id is a string if it’s a BigNumber
@@ -61,53 +61,56 @@ export default function VotePollsSection() {
 		}
 	};
 	return (
-		<div className="flex flex-wrap gap-10">
-			{polls.length > 0 ? (
-				polls.map((poll) => (
-					<Card key={poll.id} className=" max-w-md">
-						<CardHeader>
-							<CardTitle>Poll {poll.id}</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<Select
-								onValueChange={(value) =>
-									setSelectedCandidate(
-										new Map(selectedCandidate.set(poll.id, value))
-									)
-								}
-								value={selectedCandidate.get(poll.id) || ""}
-							>
-								<SelectTrigger className="w-[180px]">
-									<SelectValue placeholder="Select a candidate" />
-								</SelectTrigger>
-								<SelectContent>
-									{poll.candidates.map((candidate, index) => (
-										<SelectItem key={index} value={index.toString()}>
-											{candidate.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</CardContent>
-						<CardFooter className="flex justify-end">
-							<Button
-								variant={"accent"}
-								onClick={() =>
-									handleVote(poll.id, selectedCandidate.get(poll.id) || "")
-								}
-								disabled={!selectedCandidate.get(poll.id)}
-								className=""
-							>
-								Vote
-							</Button>
-						</CardFooter>
-					</Card>
-				))
-			) : (
-				<p className="text-center font-bold text-2xl">
-					No active votes available.
-				</p>
-			)}
+		<div className="bg-sky-950  p-3 rounded-xl">
+			<h2 className="lg:text-2xl text-center font-bold">Vote:</h2>
+			<div className="flex flex-wrap gap-10">
+				{polls.length > 0 ? (
+					polls.map((poll) => (
+						<Card key={poll.id} className=" max-w-md">
+							<CardHeader>
+								<CardTitle>Poll {poll.id}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<Select
+									onValueChange={(value) =>
+										setSelectedCandidate(
+											new Map(selectedCandidate.set(poll.id, value))
+										)
+									}
+									value={selectedCandidate.get(poll.id) || ""}
+								>
+									<SelectTrigger className="w-[180px]">
+										<SelectValue placeholder="Select a candidate" />
+									</SelectTrigger>
+									<SelectContent>
+										{poll.candidates.map((candidate, index) => (
+											<SelectItem key={index} value={index.toString()}>
+												{candidate.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</CardContent>
+							<CardFooter className="flex justify-end">
+								<Button
+									variant={"accent"}
+									onClick={() =>
+										handleVote(poll.id, selectedCandidate.get(poll.id) || "")
+									}
+									disabled={!selectedCandidate.get(poll.id)}
+									className=""
+								>
+									Vote
+								</Button>
+							</CardFooter>
+						</Card>
+					))
+				) : (
+					<p className="text-center font-bold text-2xl">
+						No active votes available.
+					</p>
+				)}
+			</div>
 		</div>
 	);
 }
