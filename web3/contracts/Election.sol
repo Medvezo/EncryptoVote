@@ -50,7 +50,7 @@ contract Ballot {
 
     // Create a new poll with initial candidates
     function createPoll(string[] memory candidateNames) public {
-        Poll storage p = polls[nextPollId++];
+        Poll storage p = polls[nextPollId];
         p.chairperson = msg.sender;
         p.isActive = true;
         for (uint256 i = 0; i < candidateNames.length; i++) {
@@ -58,7 +58,8 @@ contract Ballot {
                 Candidate({name: candidateNames[i], voteCount: 0})
             );
         }
-        emit PollCreated(nextPollId - 1, candidateNames);
+        emit PollCreated(nextPollId, candidateNames); // Emit before incrementing
+        nextPollId++;
     }
 
     // Give a voter the right to vote on a specific poll
