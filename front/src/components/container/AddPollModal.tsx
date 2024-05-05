@@ -58,6 +58,7 @@ export default function AddVoteModal() {
 			toast.error("Failed to create poll. Please try again.");
 		}
 		setIsLoading(false);
+		window.dispatchEvent(new CustomEvent('poll-created'));
 	};
 
 	return (
