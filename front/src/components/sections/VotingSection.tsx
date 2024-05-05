@@ -6,6 +6,22 @@ import { vote, fetchAvailablePolls } from "@/helpers/web3";
 import { Button } from "../ui/button";
 import GrantVoteRightsModal from "../forms/GrantVoteRightsModal";
 import TestButtons from "../common/TestButtons";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import ManageCreatedPollSection from "./ManageCreatedPollSection";
 
 export interface Poll {
 	id: number;
@@ -31,7 +47,7 @@ export default function VotingSection() {
 				setPolls(
 					availablePolls.map((poll) => ({
 						...poll,
-						id: poll.id.toString(), // Convert BigNumber to string
+						id: poll.id.toString(), // Ensure id is a string if it’s a BigNumber
 						candidates: poll.candidates.map((candidate) => ({
 							...candidate,
 							name: candidate.name,
@@ -59,47 +75,59 @@ export default function VotingSection() {
 
 	return (
 		<div>
-			{polls.length > 0 ? (
-				polls.map((poll) => (
-					<div key={poll.id} className="poll-card">
-						<h2>Poll {poll.id}</h2>
-						<select
-							value={selectedCandidate.get(Number(poll.id)) || ""}
-							onChange={(e) =>
-								setSelectedCandidate(
-									new Map(
-										selectedCandidate.set(Number(poll.id), e.target.value)
-									)
-								)
-							}
-						>
-							<option value="">Select a Candidate</option>
-							{poll.candidates.map((candidate, index) => (
-								<option key={index} value={index.toString()}>
-									{candidate.name}
-								</option>
-							))}
-						</select>
-						<Button
-							onClick={() =>
-								handleVote(
-									Number(poll.id),
-									selectedCandidate.get(Number(poll.id)) || ""
-								)
-							}
-						>
-							Vote
-						</Button>
-					</div>
-				))
-			) : (
-				<p className="text-center font-bold text-2xl">
-					No active votes available.
-				</p>
-			)}
+			<div className="flex flex-wrap gap-10">
+				{polls.length > 0 ? (
+					polls.map((poll) => (
+						<Card key={poll.id} className=" max-w-md">
+							<CardHeader>
+								<h2>Poll {poll.id}</h2>
+							</CardHeader>
+							<CardContent>
+								<Select
+									onValueChange={(value) =>
+										setSelectedCandidate(
+											new Map(selectedCandidate.set(poll.id, value))
+										)
+									}
+									value={selectedCandidate.get(poll.id) || ""}
+								>
+									<SelectTrigger className="w-[180px]">
+										<SelectValue placeholder="Select a candidate" />
+									</SelectTrigger>
+									<SelectContent>
+										{poll.candidates.map((candidate, index) => (
+											<SelectItem key={index} value={index.toString()}>
+												{candidate.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</CardContent>
+							<CardFooter className="flex justify-end">
+								<Button
+									variant={"accent"}
+									onClick={() =>
+										handleVote(poll.id, selectedCandidate.get(poll.id) || "")
+									}
+									disabled={!selectedCandidate.get(poll.id)}
+									className=""
+								>
+									Vote
+								</Button>
+							</CardFooter>
+						</Card>
+					))
+				) : (
+					<p className="text-center font-bold text-2xl">
+						No active votes available.
+					</p>
+				)}
+			</div>
 			{message && <p>{message}</p>}
 			<GrantVoteRightsModal />
 			<TestButtons />
+
+			<ManageCreatedPollSection />
 		</div>
 	);
 }
