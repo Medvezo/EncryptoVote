@@ -105,15 +105,21 @@ export async function fetchPollDetails(signer: ethers.Signer, pollId: number) {
 export async function fetchAllPolls(signer: ethers.Signer): Promise<Poll[]> {
 	const contract = new ethers.Contract(contractAddress, contractABI, signer);
 	try {
-		const voterAddress = await signer.getAddress();
-		const pollIds = await contract.getEligiblePolls(voterAddress);
-		return pollIds.map(async (id:number) => {
-			const candidates = await contract.getCandidates(id);
-			return {
-				id,
-				candidates: candidates.map((c: any) => ({ name: c.name })),
-			};
-		});
+		const signerAddress = await signer.getAddress();
+		const totalPollsCount = await contract.nextPollId(); // Fetch total number of polls
+		const polls = [];
+
+		for (let i = 0; i < totalPollsCount.toNumber(); i++) {
+			const poll = await contract.polls(i);
+			if (poll.chairperson.toLowerCase() === signerAddress.toLowerCase()) {
+				const candidates = await contract.getCandidates(i);
+				polls.push({
+					id: i,
+					candidates: candidates.map((c: any) => ({ name: c.name })),
+				});
+			}
+		}
+		return polls;
 	} catch (error) {
 		console.error("Error fetching polls:", error);
 		return []; // Return an empty array if there's an error
