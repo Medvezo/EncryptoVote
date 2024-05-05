@@ -1,25 +1,17 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { navigation } from "@/lib/const";
 
-interface NavItem {
-	name: string;
-	href: string;
-}
-
-interface Navigation {
-	[key: string]: NavItem[];
-}
-
-interface NavBarProps {
-	navigation: Navigation;
-}
-
-export default function NavBar({ navigation }: NavBarProps) {
+export default function NavBar({ isMobile }: { isMobile?: boolean }) {
 	const pathname = usePathname();
 
 	return (
-		<div className="hidden sm:text-sm md:mr-16 md:flex md:justify-center md:items-center md:space-x-8 lg:text-lg">
+		<div
+			className={`${
+				isMobile ? "flex-col" : "hidden"
+			} text-xl space-y-5 lg:space-y-0 lg:mr-16 lg:flex lg:justify-center lg:items-center lg:space-x-8 lg:text-lg`}
+		>
 			{Object.values(navigation)
 				.flat()
 				.map((item) => (
