@@ -58,43 +58,49 @@ export default function ManageCreatedPollSection() {
 	};
 
 	return (
-		<section className="flex gap-10 flex-wrap">
-			{polls.length > 0 ? (
-				polls.map((poll) => (
-					<Card
-						key={poll.id}
-						className="poll-card max-w-md min-w-80 lg:min-w-96"
-					>
-						<CardHeader>
-							<CardTitle className="text-xl font-bold text-amber-500 text-center">
-								Poll ID: {poll.id}
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="font-bold ">
-							{poll.candidates.map((candidate, index) => (
-								<div key={index}>{candidate.name}</div>
-							))}
-						</CardContent>
-						<CardFooter className="flex flex-col gap-5">
-							{poll.isActive && <GrantVoteRightsModal pollId={poll.id} />}
-							{poll.isActive ? (
-								<Button
-									variant={"destructive"}
-									onClick={() => handleEndPoll(poll.id)}
-								>
-									End Voting
-								</Button>
-							) : (
-								<Button variant={"success"} onClick={() => handleGetWinner(poll.id)}>
-									Get Winner
-								</Button>
-							)}
-						</CardFooter>
-					</Card>
-				))
-			) : (
-				<p>No polls available to manage.</p>
-			)}
+		<section className="flex flex-col gap-10 bg-blue-950 lg:mx-10  p-5 rounded-xl">
+			<h2 className="text-2xl lg:text-3xl text-center font-bold">Manage:</h2>
+			<div className="flex justify-center items-center gap-10 flex-wrap">
+				{polls.length > 0 ? (
+					polls.map((poll) => (
+						<Card
+							key={poll.id}
+							className="poll-card max-w-md min-w-80 lg:min-w-96 min-h-60"
+						>
+							<CardHeader className="">
+								<CardTitle className="text-xl font-bold text-amber-500 text-center">
+									Poll ID: {poll.id}
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="font-bold max-h-">
+								{poll.candidates.map((candidate, index) => (
+									<div key={index}>{candidate.name}</div>
+								))}
+							</CardContent>
+							<CardFooter className="flex flex-col gap-5">
+								{poll.isActive && <GrantVoteRightsModal pollId={poll.id} />}
+								{poll.isActive ? (
+									<Button
+										variant={"destructive"}
+										onClick={() => handleEndPoll(poll.id)}
+									>
+										End Voting
+									</Button>
+								) : (
+									<Button
+										variant={"success"}
+										onClick={() => handleGetWinner(poll.id)}
+									>
+										Get Winner
+									</Button>
+								)}
+							</CardFooter>
+						</Card>
+					))
+				) : (
+					<p>No polls available to manage.</p>
+				)}
+			</div>
 		</section>
 	);
 }

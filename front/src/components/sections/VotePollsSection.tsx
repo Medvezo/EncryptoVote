@@ -61,9 +61,9 @@ export default function VotePollsSection() {
 		}
 	};
 	return (
-		<div className="bg-sky-950  p-3 rounded-xl">
-			<h2 className="lg:text-2xl text-center font-bold">Vote:</h2>
-			<div className="flex flex-wrap gap-10">
+		<div className="bg-blue-950 flex flex-col gap-10  p-5 lg:mx-10 rounded-xl">
+			<h2 className="text-2xl lg:text-3xl text-center font-bold">Vote:</h2>
+			<div className="flex flex-wrap justify-center gap-10">
 				{polls.length > 0 ? (
 					polls.map((poll) => (
 						<Card key={poll.id} className=" max-w-md">
