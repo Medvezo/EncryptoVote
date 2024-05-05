@@ -98,7 +98,9 @@ export default function ManageCreatedPollSection() {
 						</Card>
 					))
 				) : (
-					<p>No polls available to manage.</p>
+					<p className="text-center font-bold text-2xl">
+						No polls available to manage.
+					</p>
 				)}
 			</div>
 		</section>

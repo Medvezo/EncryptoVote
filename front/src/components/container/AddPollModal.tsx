@@ -64,10 +64,10 @@ export default function AddVoteModal() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button size="sm" className="h-8 gap-1">
-					<PlusCircle className="h-3.5 w-3.5" />
-					<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-						Add Vote
+				<Button size="sm" variant={"accent"} className="h-8 gap-1 h-8 gap-1 font-semibold text-lg">
+					<PlusCircle className="h-5 w-5" />
+					<span className=" not-sr-only sm:whitespace-nowrap">
+						Add Poll
 					</span>
 				</Button>
 			</DialogTrigger>
