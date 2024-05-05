@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
-import { Poll, Candidate } from "@/components/sections/VotingSection";
+import { Poll } from "@/components/sections/VotingSection";
 
 import abiJSON from "@/lib/contractABI.json";
 const contractABI = abiJSON.abi; // Accessing nested ABI array
 
-const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 export async function createPoll(
 	candidateNames: string[],
@@ -13,7 +13,7 @@ export async function createPoll(
 	const contract = new ethers.Contract(contractAddress, contractABI, signer);
 	const transactionResponse = await contract.createPoll(candidateNames);
 	const receipt = await transactionResponse.wait();
-	
+
 	const pollCreatedEvent = receipt.events?.find(
 		(event: any) => event.event === "PollCreated"
 	);
@@ -94,4 +94,17 @@ export async function fetchAvailablePolls(
 		});
 	}
 	return polls;
+}
+
+export async function fetchPollDetails(signer: ethers.Signer, pollId: number) {
+	const contract = new ethers.Contract(contractAddress, contractABI, signer);
+	const candidates = await contract.getCandidates(pollId);
+	console.log(`Candidates for poll ${pollId}:`, candidates);
+}
+
+export async function fetchAllPolls(signer: ethers.Signer) {
+	const contract = new ethers.Contract(contractAddress, contractABI, signer);
+	const voterAddress = await signer.getAddress();
+	const pollIds = await contract.getEligiblePolls(voterAddress);
+	console.log("Eligible Polls:", pollIds);
 }
