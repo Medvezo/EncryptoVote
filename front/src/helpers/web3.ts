@@ -26,7 +26,7 @@ export async function createPoll(
 }
 
 export async function giveRightToVote(
-	pollId: number,
+	pollId: number | undefined,
 	voterAddress: string,
 	signer: ethers.Signer
 ) {
@@ -102,9 +102,20 @@ export async function fetchPollDetails(signer: ethers.Signer, pollId: number) {
 	console.log(`Candidates for poll ${pollId}:`, candidates);
 }
 
-export async function fetchAllPolls(signer: ethers.Signer) {
+export async function fetchAllPolls(signer: ethers.Signer): Promise<Poll[]> {
 	const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	const voterAddress = await signer.getAddress();
-	const pollIds = await contract.getEligiblePolls(voterAddress);
-	console.log("Eligible Polls:", pollIds);
+	try {
+		const voterAddress = await signer.getAddress();
+		const pollIds = await contract.getEligiblePolls(voterAddress);
+		return pollIds.map(async (id:number) => {
+			const candidates = await contract.getCandidates(id);
+			return {
+				id,
+				candidates: candidates.map((c: any) => ({ name: c.name })),
+			};
+		});
+	} catch (error) {
+		console.error("Error fetching polls:", error);
+		return []; // Return an empty array if there's an error
+	}
 }
