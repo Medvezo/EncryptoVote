@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, Search } from "lucide-react";
+import { CircleUser, Wallet, Plus } from "lucide-react";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -8,60 +8,26 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import Logo from "../common/Logo";
+import NavBar from "./NavBar";
 
 export default function AppHeader({ children }: { children: React.ReactNode }) {
 	return (
 		<header className="sticky top-0 flex h-20 items-center gap-4 border-b shadow-lg shadow-blue-950/50 bg-[#03001417] backdrop-blur-md z-40 px-4 lg:px-6 ">
-			<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+			<nav className="flex justify-center items-center gap-5 text-lg font-medium md:text-sm lg:gap-6">
+				{children}
 				<Logo size={70} noText href="/dashboard" />
-				<Link
-					href="#"
-					className="text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Dashboard
-				</Link>
-				<Link
-					href="#"
-					className="text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Orders
-				</Link>
-				<Link
-					href="#"
-					className="text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Products
-				</Link>
-				<Link
-					href="#"
-					className="text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Customers
-				</Link>
-				<Link
-					href="#"
-					className="text-foreground transition-colors hover:text-foreground"
-				>
-					Settings
-				</Link>
+				<NavBar />
 			</nav>
 
-			{children}
-
-			<div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-				<form className="ml-auto flex-1 sm:flex-initial">
-					<div className="relative">
-						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-						<Input
-							type="search"
-							placeholder="Search products..."
-							className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-						/>
-					</div>
-				</form>
+			<div className="flex w-full  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+				<Link className="ml-auto" href={"/connect-wallet"}>
+					<Button variant={"accent"}>
+						<Wallet className="w-8 h-8 " />
+						<Plus className="w-8 h-8 " />
+					</Button>
+				</Link>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="secondary" size="icon" className="rounded-full">

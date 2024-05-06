@@ -4,6 +4,9 @@ export const navigation = {
 		{ name: "Blog", href: "/blog" },
 		{ name: "Contact", href: "/contact" },
 	],
+    portal:[
+        {name:"Dashboard", href:"/dashboard"}
+    ]
 };
 
 
