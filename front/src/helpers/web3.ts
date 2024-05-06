@@ -126,3 +126,15 @@ export async function fetchAllPolls(signer: ethers.Signer): Promise<Poll[]> {
 		return []; // Return an empty array if there's an error
 	}
 }
+
+
+export async function checkPollActive(signer: ethers.Signer, pollId: number): Promise<boolean> {
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    try {
+        const poll = await contract.polls(pollId);
+        return poll.isActive;
+    } catch (error) {
+        console.error("Error checking poll active status:", error);
+        return false; // Assume not active if there's an error
+    }
+}
