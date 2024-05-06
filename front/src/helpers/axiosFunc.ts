@@ -17,7 +17,6 @@ export const login = async (email: string, password: string) => {
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status !== 401) {
-      console.error("Registration failed", error);
       throw error.response.data;
     }
   }
@@ -30,7 +29,6 @@ export const register = async (UserRegisterData: TUserRegisterData) => {
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status !== 401) {
-      console.error("Registration failed", error);
       throw error.response.data;
     }
   }
