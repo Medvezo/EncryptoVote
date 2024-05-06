@@ -6,7 +6,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 // METADATA
 export const metadata: Metadata = {
 	title: "Blog",
-	description: "Learn ",
+	description: "Learn about our website and find answers to your questions",
 };
 
 export default function Home() {
