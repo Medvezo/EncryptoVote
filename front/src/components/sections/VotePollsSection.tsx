@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useWallet } from "@/components/context/WalletContext";
-import { vote, fetchAvailablePolls } from "@/helpers/web3";
+import {
+	vote,
+	fetchAvailablePolls,
+	getWinningCandidate,
+	checkPollActive,
+} from "@/helpers/web3";
 import { Button } from "../ui/button";
 import {
 	Select,
@@ -31,7 +36,10 @@ export default function VotePollsSection() {
 	useEffect(() => {
 		const fetchPolls = async () => {
 			if (signer) {
-				const availablePolls = await fetchAvailablePolls(signer);
+				let availablePolls = await fetchAvailablePolls(signer);
+				for (let poll of availablePolls) {
+					poll.isActive = await checkPollActive(signer, poll.id);
+				}
 				setPolls(
 					availablePolls.map((poll) => ({
 						...poll,
@@ -60,13 +68,28 @@ export default function VotePollsSection() {
 			setMessage("Please connect your wallet and select a candidate to vote.");
 		}
 	};
+
+	const handleGetWinner = async (pollId: number) => {
+		if (signer && signer.provider) {
+			try {
+				const winner = await getWinningCandidate(pollId, signer.provider);
+				setMessage(`Winner of poll ${pollId} is ${winner}`);
+			} catch (error) {
+				console.error("Error retrieving winner:", error);
+				setMessage("Failed to retrieve winner. Please try again.");
+			}
+		} else {
+			setMessage("Signer is not connected or provider is unavailable.");
+		}
+	};
+
 	return (
 		<div className="bg-blue-950 flex flex-col gap-10  p-5 lg:mx-10 rounded-xl">
 			<h2 className="text-2xl lg:text-3xl text-center font-bold">Vote:</h2>
 			<div className="flex flex-wrap justify-center gap-10">
 				{polls.length > 0 ? (
 					polls.map((poll) => (
-						<Card key={poll.id} className=" max-w-md">
+						<Card key={poll.id} className="max-w-md">
 							<CardHeader>
 								<CardTitle>Poll {poll.id}</CardTitle>
 							</CardHeader>
@@ -92,16 +115,21 @@ export default function VotePollsSection() {
 								</Select>
 							</CardContent>
 							<CardFooter className="flex justify-end">
-								<Button
-									variant={"accent"}
-									onClick={() =>
-										handleVote(poll.id, selectedCandidate.get(poll.id) || "")
-									}
-									disabled={!selectedCandidate.get(poll.id)}
-									className=""
-								>
-									Vote
-								</Button>
+								{poll.isActive ? (
+									<Button
+										variant={"accent"}
+										onClick={() =>
+											handleVote(poll.id, selectedCandidate.get(poll.id) || "")
+										}
+										disabled={!selectedCandidate.get(poll.id)}
+									>
+										Vote
+									</Button>
+								) : (
+									<Button onClick={() => handleGetWinner(poll.id)}>
+										Get Winner
+									</Button>
+								)}
 							</CardFooter>
 						</Card>
 					))
