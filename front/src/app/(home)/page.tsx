@@ -2,6 +2,11 @@ import BentoGridSection from "@/components/sections/BentoGridSection";
 import FaqSection from "@/components/sections/FaqSection";
 import HeroSection from "@/components/sections/HeroSection";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Home",
+};
 
 export default function Home() {
 	return (

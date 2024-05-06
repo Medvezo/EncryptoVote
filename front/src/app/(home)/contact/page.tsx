@@ -1,5 +1,10 @@
 import { IconPhone, IconMail } from "@tabler/icons-react";
 import ContactForm from "@/components/forms/ContactForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Contact",
+};
 
 export default function Contact() {
 	return (
