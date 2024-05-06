@@ -1,10 +1,14 @@
 export const blogNames = [
   {
-    "title": "Sample markdown",
-    "slug": "/blog/sample"
+    "title": "Markdown Style Guide",
+    "slug": "/blog/markdown-guide"
   },
   {
-    "title": "Why to use crypto?",
+    "title": "Diving Into Web3: Why Its More Than Just an Upgrade",
+    "slug": "/blog/why-web3"
+  },
+  {
+    "title": "Blockhain explained",
     "slug": "/blog/whycrypto"
   }
 ];

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/AceLabel";
 import { Input } from "@/components/ui/AceInput";
 import { BottomGradient } from "@/components/common/BottomGradient";
 import { register } from "@/helpers/axiosFunc";
-import LabelInputContainer from "./LabelInputContainer";
+import LabelInputContainer from "../container/LabelInputContainer";
 import TwinkleSpikes from "../common/TwinkleSpikes";
 import Link from "next/link";
 import Logo from "../common/Logo";

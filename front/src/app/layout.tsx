@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className="dark">
-			<body className={oxanium.className}>
+			<body className={`${oxanium.className} bg-slate-900`}>
 				{children}
 				<ToastContainer theme="colored" />
 			</body>

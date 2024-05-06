@@ -38,7 +38,7 @@ export default async function Home({ params }: BlogSlugParams) {
 
 	return (
 		<>
-			<div className="flex flex-1 lg:gap-10 mt-20">
+			<div className="flex flex-1 lg:gap-10 mt-20 min-h-screen">
 				<BlogSideBar />
 				<div className="flex flex-col">
 					<Mdx code={doc.body.code} />
