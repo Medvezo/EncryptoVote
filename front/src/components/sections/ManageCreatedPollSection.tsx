@@ -13,6 +13,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { toast } from "react-toastify";
+
 export default function ManageCreatedPollSection() {
 	const { signer } = useWallet();
 	const [polls, setPolls] = useState<Poll[]>([]);
@@ -37,7 +39,7 @@ export default function ManageCreatedPollSection() {
 	const handleEndPoll = async (pollId: number) => {
 		if (signer) {
 			await endPoll(pollId, signer);
-			alert(`Poll ${pollId} has been ended.`);
+			toast.info(`Poll ${pollId} has been ended.`);
 			// Refresh the polls list to reflect the ended poll
 			fetchPolls();
 		}
@@ -47,13 +49,13 @@ export default function ManageCreatedPollSection() {
 		if (signer && signer.provider) {
 			try {
 				const winner = await getWinningCandidate(pollId, signer.provider);
-				alert(`Winner of poll ${pollId} is ${winner}`);
+				toast.success(`Winner of poll ${pollId} is ${winner}`);
 			} catch (error) {
 				console.error("Error retrieving winner:", error);
-				alert("Failed to retrieve winner. Please try again.");
+				toast.success("Failed to retrieve winner. Please try again.");
 			}
 		} else {
-			alert("Signer is not connected or provider is unavailable.");
+			toast.success("Signer is not connected or provider is unavailable.");
 		}
 	};
 

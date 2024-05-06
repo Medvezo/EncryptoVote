@@ -24,6 +24,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Poll, Candidate } from "./VotingSection";
+import { toast } from "react-toastify";
 
 export default function VotePollsSection() {
 	const { signer } = useWallet();
@@ -31,7 +32,6 @@ export default function VotePollsSection() {
 	const [selectedCandidate, setSelectedCandidate] = useState<
 		Map<number, string>
 	>(new Map());
-	const [message, setMessage] = useState<string>("");
 
 	useEffect(() => {
 		const fetchPolls = async () => {
@@ -59,13 +59,13 @@ export default function VotePollsSection() {
 		if (candidateIndex !== "" && signer) {
 			try {
 				await vote(pollId, parseInt(candidateIndex), signer);
-				setMessage("Vote successfully cast!");
+				toast.success("Vote successfully cast!");
 			} catch (error) {
 				console.error("Voting error:", error);
-				setMessage("Failed to cast vote. Please try again.");
+				toast.error("Failed to cast vote. Please try again.");
 			}
 		} else {
-			setMessage("Please connect your wallet and select a candidate to vote.");
+			toast.error("Please connect your wallet and select a candidate to vote.");
 		}
 	};
 
@@ -73,13 +73,13 @@ export default function VotePollsSection() {
 		if (signer && signer.provider) {
 			try {
 				const winner = await getWinningCandidate(pollId, signer.provider);
-				setMessage(`Winner of poll ${pollId} is ${winner}`);
+				toast.success(`Winner of poll ${pollId} is ${winner}`);
 			} catch (error) {
 				console.error("Error retrieving winner:", error);
-				setMessage("Failed to retrieve winner. Please try again.");
+				toast.error("Failed to retrieve winner. Please try again.");
 			}
 		} else {
-			setMessage("Signer is not connected or provider is unavailable.");
+			toast.error("Signer is not connected or provider is unavailable.");
 		}
 	};
 
