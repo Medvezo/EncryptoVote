@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import TwinkleSpikes from "../common/TwinkleSpikes";
 import Link from "next/link";
 import Logo from "../common/Logo";
+import Cookies from "js-cookie";
+
 
 export default function LoginForm() {
 	const [email, setEmail] = useState("");
@@ -25,15 +27,13 @@ export default function LoginForm() {
 			.promise(login(email, password), {
 				pending: "Logging in...",
 				success: "Logged in successfully! 🎉",
-				error: "Login failed! Please check your credentials and retry again",
 			})
 			.then((data) => {
-				console.log("Login successful", data); //! delete later
+				Cookies.set("user_email", data.email)
 				router.push("/dashboard"); // redirect to dashboard on success
 			})
 			.catch((error) => {
-				toast.error("Some unexpected error happened, please try again");
-				console.error("Login failed", error); //! delete later
+				toast.error(`${error.message}`);
 			});
 	};
 

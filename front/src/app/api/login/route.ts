@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
 
 		// Make the POST request to the Laravel backend with axios.
 		const response = await axios.post("http://127.0.0.1:8000/login", reqBody);
-		console.log("Login request sent", reqBody);
 
 		// Create a new NextResponse object with the response data and status.
 		return new NextResponse(JSON.stringify(response.data), {

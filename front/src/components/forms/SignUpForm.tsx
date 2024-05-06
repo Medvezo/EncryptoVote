@@ -39,16 +39,12 @@ export default function SignupForm() {
 			.promise(register(userData), {
 				pending: "Registering...",
 				success: "Registration successful! Redirecting to login... 🎉",
-				error:
-					"Registration failed! Please check your credentials and try again.",
 			})
 			.then((data) => {
-				console.log("Registration successful", data); 		//! delete later
 				router.push("/login"); // redirect to login on success
 			})
 			.catch((error) => {
-				toast.error("Some unexpected error happened, please try again.");
-				console.error("Registration failed", error); 		//! delete later
+				toast.error(`${error.message}`);
 			});
 	};
 

@@ -5,10 +5,14 @@ import makeBlockie from "ethereum-blockies-base64";
 import Image from "next/image";
 import { Card } from "../ui/card";
 import { useWallet } from "../context/WalletContext";
-
-export default function CryptoAuthButton() {
+import {useEffect} from "react"
+export default function CryptoAuthButton({ setAddress }:{ setAddress:any}) {
 	const { connectWallet, account } = useWallet() ;
 
+	useEffect(() => {
+		console.log(account)
+		setAddress(account)
+	}, [account])
 	return (
 		<div className="flex flex-col justify-center items-center my-3 mt-10">
 			<Button
