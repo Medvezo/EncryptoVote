@@ -32,4 +32,5 @@ export const register = async (UserRegisterData: TUserRegisterData) => {
       throw error.response.data;
     }
   }
-};
+}
+

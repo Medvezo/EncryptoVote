@@ -13,8 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import {useState} from "react";
 
 export default function ConnectWalletModal() {
+	const [name, setName] = useState<string>("");
+	const [address, setAddress] = useState("");
 	const router = useRouter();
 
 	return (
@@ -23,15 +26,15 @@ export default function ConnectWalletModal() {
 				<CardTitle>Connect Your Wallet</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<form>
+				<form >
 					<div className="grid w-full items-center gap-4">
 						<div className="flex flex-col space-y-1.5">
 							<Label htmlFor="name">Name</Label>
-							<Input id="name" placeholder="Name of your Wallet" />
-						</div>
+							<Input id="name" value={name} onChange={(e) => setName(e.target.value)}  placeholder="Name of your Wallet" />
+						</div>	
 					</div>
 				</form>
-				<CryptoAuthButton />
+				<CryptoAuthButton setAddress={setAddress}/>
 				<aside className="flex justify-center items-center flex-col mt-10">
 					<p className="font-bold text-2xl ">Supported Wallets:</p>
 					<div>

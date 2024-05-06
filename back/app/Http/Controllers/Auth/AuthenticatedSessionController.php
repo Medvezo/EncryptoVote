@@ -19,17 +19,22 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.login');
     }
+    // App\Http\Controllers\Auth\AuthenticatedSessionController::store(): Return value must be of type Illuminate\Http\RedirectResponse, Illuminate\Http\JsonResponse returned
+
+
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
+        
+        $user = Auth::user();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return response()->json(['email' => $user->email]);
     }
 
     /**
