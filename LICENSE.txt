@@ -1,4 +1,4 @@
-MyApp Restricted Use License (MyApp-RUL)
+EncryptoVote Restricted Use License (EncryptoVote-RUL)
 
 Copyright (c) 2024, Mansur Mustafayev
 
