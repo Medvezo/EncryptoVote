@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CircleUser, Wallet, Plus } from "lucide-react";
 import {
@@ -11,8 +13,16 @@ import {
 import { Button } from "../ui/button";
 import Logo from "../common/Logo";
 import NavBar from "./NavBar";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function AppHeader({ children }: { children: React.ReactNode }) {
+	const router = useRouter();
+	const handleLogout = () => {
+		Cookies.remove("user_email");
+		router.push("/")
+	};
+
 	return (
 		<header className="sticky top-0 flex h-20 items-center gap-4 border-b shadow-lg shadow-blue-950/50 bg-[#03001417] backdrop-blur-md z-40 px-4 lg:px-6 ">
 			<nav className="flex justify-center items-center gap-5 text-lg font-medium md:text-sm lg:gap-6">
@@ -36,12 +46,7 @@ export default function AppHeader({ children }: { children: React.ReactNode }) {
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>My Account</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>Settings</DropdownMenuItem>
-						<DropdownMenuItem>Support</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>Logout</DropdownMenuItem>
+						<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>

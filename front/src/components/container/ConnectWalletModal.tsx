@@ -15,6 +15,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function ConnectWalletModal() {
 	const [name, setName] = useState<string>("");
@@ -22,17 +23,19 @@ export default function ConnectWalletModal() {
 	const router = useRouter();
 
 	const handleSubmit = async () => {
-		try {
-			const response = await axios.post("api/connect-wallet", {
-				name: name,
-				address: address,
-			});
-			return response.data;
-		} catch (error: any) {
-			if (error.response && error.response.status !== 401) {
-				throw error.response.data;
-			}
-		}
+		// try {
+		// 	const response = await axios.post("api/connect-wallet", {
+		// 		name: name,
+		// 		address: address,
+		// 	});
+		// 	return response.data;
+		// } catch (error: any) {
+		// 	if (error.response && error.response.status !== 401) {
+		// 		throw error.response.data;
+		// 	}
+		// }
+		router.push('/dashboard')
+		toast.success("Wallet added")
 	};
 
 	return (
