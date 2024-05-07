@@ -15,6 +15,8 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export default function ConnectWalletModal() {
 	const [name, setName] = useState<string>("");
@@ -22,17 +24,24 @@ export default function ConnectWalletModal() {
 	const router = useRouter();
 
 	const handleSubmit = async () => {
-		try {
-			const response = await axios.post("api/connect-wallet", {
-				name: name,
-				address: address,
-			});
-			return response.data;
-		} catch (error: any) {
-			if (error.response && error.response.status !== 401) {
-				throw error.response.data;
+		if (!Cookies.get(name)) {
+			// if already exists
+			try {
+				const response = await axios.post("api/connect-wallet", {
+					name: name,
+					address: address,
+				});
+				Cookies.set(name, address, { expires: 30 });
+				return response.data;
+			} catch (error: any) {
+				if (error.response && error.response.status !== 401) {
+					throw error.response.data;
+				}
 			}
+		} else {
+			toast.error("A wallet with this name is already connected.");
 		}
+		router.push('/dashboard')
 	};
 
 	return (
