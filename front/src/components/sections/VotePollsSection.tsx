@@ -29,9 +29,7 @@ import { toast } from "react-toastify";
 export default function VotePollsSection() {
 	const { signer } = useWallet();
 	const [polls, setPolls] = useState<Poll[]>([]);
-	const [selectedCandidate, setSelectedCandidate] = useState<
-		Map<number, string>
-	>(new Map());
+	const [selectedCandidate, setSelectedCandidate] = useState<Map<number, string>>(new Map());
 
 	useEffect(() => {
 		const fetchPolls = async () => {
@@ -40,16 +38,13 @@ export default function VotePollsSection() {
 				for (let poll of availablePolls) {
 					poll.isActive = await checkPollActive(signer, poll.id);
 				}
-				setPolls(
-					availablePolls.map((poll) => ({
-						...poll,
-						id: poll.id.toString(), // Ensure id is a string if it’s a BigNumber
-						candidates: poll.candidates.map((candidate) => ({
-							...candidate,
-							name: candidate.name,
-						})),
+				setPolls(availablePolls.map(poll => ({
+					...poll,
+					id: Number(poll.id), // Convert id to number if it's a string
+					candidates: poll.candidates.map(candidate => ({
+						name: candidate.name
 					}))
-				);
+				})));
 			}
 		};
 		fetchPolls();
